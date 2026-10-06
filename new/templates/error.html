@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ code }} | EMSP{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/auth.css') }}">{% endblock %}
+{% block content %}
+<main class="auth-shell">
+<section class="auth-brand" aria-label="EMSP Abidjan">
+<div class="auth-brand__inner">
+<a class="brand-lockup" href="{{ url_for('home') }}" aria-label="Retour à l’accueil EMSP">
+<img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EMSP Abidjan">
+</a>
+<p class="auth-eyebrow">Portail EMSP · Abidjan</p>
+<h1>Un retour simple à votre espace.</h1>
+<p>Vous pouvez reprendre votre parcours depuis la page d’accueil.</p>
+</div>
+</section>
+<section class="auth-main" aria-labelledby="error-title">
+<div class="auth-main__content">
+<p class="auth-kicker"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> Une erreur est survenue</p>
+<h2 id="error-title">Erreur {{ code }}</h2>
+<p class="auth-intro">{{ message }}</p>
+<a class="btn-primary auth-submit" href="{{ url_for('home') }}"><i class="bi bi-house" aria-hidden="true"></i> Retour à l’accueil</a>
+</div>
+</section>
+</main>
+{% endblock %}
+{% block footer %}{% endblock %}

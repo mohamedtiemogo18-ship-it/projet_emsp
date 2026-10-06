@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Tableau de bord | Administration EMSP{% endblock %}
+{% block body_class %}admin-page-shell{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/admin.css') }}">{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/admin-motion.js') }}" defer></script>{% endblock %}
+{% block navbar %}{% endblock %}
+{% block content %}
+  <main class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__brand">
+        <img src="{{ url_for('static', filename='img/logo-mark.svg') }}" alt="">
+        <div><strong>EMSP</strong><span>Administration</span></div>
+      </div>
+      <nav class="admin-sidebar__nav">
+        <a href="{{ url_for('admin') }}" class="admin-sidebar__link active"><i class="bi bi-speedometer2" aria-hidden="true"></i> Tableau de bord</a>
+        <a href="{{ url_for('admin_candidatures') }}" class="admin-sidebar__link"><i class="bi bi-people" aria-hidden="true"></i> Candidatures</a>
+        <a href="{{ url_for('admin_dossiers_physiques') }}" class="admin-sidebar__link"><i class="bi bi-folder2-open" aria-hidden="true"></i> Dossiers physiques</a>
+        <a href="{{ url_for('export_csv') }}" class="admin-sidebar__link"><i class="bi bi-download" aria-hidden="true"></i> Exporter CSV</a>
+      </nav>
+      <div class="admin-sidebar__footer">
+        <span class="badge-admin">Administrateur</span>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Activer le thème sombre" title="Changer de thème" aria-pressed="false"><i class="bi bi-moon-stars-fill" aria-hidden="true"></i></button>
+        <a href="{{ url_for('profil') }}" class="admin-sidebar__back"><i class="bi bi-person-circle" aria-hidden="true"></i> Mon profil</a>
+        <form method="post" action="{{ url_for('deconnexion') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="admin-sidebar__logout" type="submit"><i class="bi bi-box-arrow-right" aria-hidden="true"></i> Déconnexion</button>
+        </form>
+      </div>
+    </aside>
+
+    <section class="admin-content">
+      <header class="admin-content__header">
+        <div>
+          <p class="admin-kicker">Espace administration</p>
+          <h1>Tableau de bord</h1>
+          <p class="muted">Vue d'ensemble et accès rapides.</p>
+        </div>
+      </header>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}" role="status">{{ message }}</div>
+        {% endfor %}
+      {% endwith %}
+
+      <section class="admin-metrics" aria-label="Indicateurs des candidatures">
+        <article class="admin-stat admin-stat--primary">
+          <span class="admin-stat__label">Total candidatures</span>
+          <span class="admin-stat__value">{{ total_candidatures }}</span>
+          <span class="admin-stat__caption"><i class="bi bi-people" aria-hidden="true"></i> Dossiers enregistrés</span>
+        </article>
+        <article class="admin-stat">
+          <span class="admin-stat__label">Brouillons</span>
+          <span class="admin-stat__value">{{ brouillons }}</span>
+          <span class="admin-stat__caption">À compléter</span>
+        </article>
+        <article class="admin-stat">
+          <span class="admin-stat__label">Soumises</span>
+          <span class="admin-stat__value">{{ soumises }}</span>
+          <span class="admin-stat__caption">À examiner</span>
+        </article>
+        <article class="admin-stat">
+          <span class="admin-stat__label">Validées</span>
+          <span class="admin-stat__value">{{ validees }}</span>
+          <span class="admin-stat__caption">Décision rendue</span>
+        </article>
+        <article class="admin-stat">
+          <span class="admin-stat__label">Rejetées</span>
+          <span class="admin-stat__value">{{ rejetees }}</span>
+          <span class="admin-stat__caption">Décision rendue</span>
+        </article>
+      </section>
+
+      <section class="admin-dashboard-grid" aria-label="Accès et stockage">
+        <div class="admin-dashboard-actions">
+          <div class="admin-section-heading">
+            <div><p class="admin-kicker">Gestion</p><h2>Accès rapides</h2></div>
+          </div>
+          <a class="admin-action-row" href="{{ url_for('admin_candidatures') }}"><span class="admin-action-icon"><i class="bi bi-people" aria-hidden="true"></i></span><span><strong>Candidatures</strong><small>Consulter et traiter les dossiers</small></span><i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+          <a class="admin-action-row" href="{{ url_for('admin_dossiers_physiques') }}"><span class="admin-action-icon"><i class="bi bi-folder2-open" aria-hidden="true"></i></span><span><strong>Dossiers physiques</strong><small>Parcourir les fichiers stockés</small></span><i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+          <a class="admin-action-row" href="{{ url_for('export_csv') }}"><span class="admin-action-icon"><i class="bi bi-download" aria-hidden="true"></i></span><span><strong>Exporter les données</strong><small>Télécharger le relevé CSV</small></span><i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+        </div>
+        <section class="admin-storage" aria-labelledby="storage-title">
+          <div class="admin-section-heading"><div><p class="admin-kicker">Stockage</p><h2 id="storage-title">Dossiers physiques</h2></div><i class="bi bi-folder-check admin-storage__mark" aria-hidden="true"></i></div>
+          <strong class="admin-storage__count">{{ total_dossiers_physiques }}</strong>
+          <p class="muted">dossier(s) créé(s) sur le serveur</p>
+          <a class="btn-secondary" href="{{ url_for('admin_dossiers_physiques') }}">Ouvrir les dossiers <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+        </section>
+      </section>
+    </section>
+  </main>
+{% endblock %}
+{% block footer %}{% endblock %}

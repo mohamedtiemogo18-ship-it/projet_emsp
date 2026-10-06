@@ -1,0 +1,33 @@
+.btn-primary, .btn-login, .btn-send { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 18px; border: 1px solid transparent; border-radius: var(--radius-md); background: var(--action); color: var(--white); font-weight: 700; cursor: pointer; transition: background .18s ease, transform .18s ease, box-shadow .18s ease; }
+.btn-primary:hover, .btn-login:hover, .btn-send:hover { background: var(--action-hover); color: var(--white); transform: translateY(-1px); box-shadow: 0 7px 18px rgba(34, 71, 145, .2); }
+.btn-secondary, .btn-create-account { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 18px; border: 1px solid var(--gray-300); border-radius: var(--radius-md); background: var(--white); color: var(--brand-700); font-weight: 700; }
+.btn-danger { background: var(--danger-600); color: var(--white); border: 0; border-radius: var(--radius-md); padding: 10px 18px; }
+.form-control, .form-select, .form-control-custom { min-height: 48px; width: 100%; padding: 11px 14px; border: 1px solid var(--gray-300); border-radius: var(--radius-md); background: var(--white); color: var(--gray-900); font-size: 16px; }
+.form-control:focus, .form-select:focus, .form-control-custom:focus { border-color: var(--brand-700); box-shadow: 0 0 0 3px rgba(40,95,158,.14); outline: 0; }
+.form-label, .form-group label { display: block; margin-bottom: 6px; color: var(--gray-700); font-size: 14px; font-weight: 700; }
+.form-group { margin-bottom: var(--space-5); }
+.form-help { display: block; margin-top: 6px; color: var(--gray-500); font-size: 14px; }
+.alert { display: flex; gap: 10px; align-items: flex-start; border: 1px solid transparent; border-radius: var(--radius-md); padding: 13px 16px; }
+.alert-success { background: var(--success-100); border-color: #A6D8B8; color: var(--success-600); }
+.alert-danger { background: var(--danger-100); border-color: #F5B5B0; color: var(--danger-600); }
+.alert-warning { background: var(--warning-100); border-color: #F3CA8A; color: var(--warning-700); }
+.alert-info { background: var(--brand-100); border-color: #B7CDF7; color: var(--brand-900); }
+.badge-status { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; font-size: 13px; font-weight: 700; }
+.badge-status--draft { background: var(--gray-100); color: var(--gray-700); }
+.badge-status--submitted { background: var(--brand-100); color: var(--brand-700); }
+.badge-status--approved { background: var(--success-100); color: var(--success-600); }
+.badge-status--rejected { background: var(--danger-100); color: var(--danger-600); }
+.card, .form-card, .cond-card, .contact-information, .contact-form-card { border: 1px solid var(--gray-200); border-radius: var(--radius-lg); background: var(--white); box-shadow: var(--shadow-card); }
+@media (max-width: 600px) { .btn-primary, .btn-login, .btn-send, .btn-secondary { width: 100%; } }
+
+/* ===== Refonte étape 1 : composants ===== */
+.btn-primary, .btn-login, .btn-send { font-family: var(--font); font-weight: 600; letter-spacing: .005em; transition: background .25s var(--ease), transform .25s var(--ease), box-shadow .25s var(--ease); }
+.btn-primary:hover, .btn-login:hover, .btn-send:hover { transform: translateY(-1px); box-shadow: 0 10px 24px -8px rgba(49, 95, 204, .55); }
+.btn-primary:active, .btn-login:active, .btn-send:active, .btn-secondary:active { transform: scale(.98); box-shadow: none; }
+.btn-secondary, .btn-create-account { font-weight: 600; transition: border-color .25s var(--ease), background .25s var(--ease), transform .25s var(--ease); }
+.btn-secondary:hover, .btn-create-account:hover { border-color: var(--brand-700); background: var(--brand-100); }
+.form-control, .form-select, .form-control-custom { border-width: 1.5px; background: var(--gray-50); transition: border-color .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease); }
+.form-control:hover, .form-select:hover, .form-control-custom:hover { border-color: var(--gray-500); }
+.form-control:focus, .form-select:focus, .form-control-custom:focus { border-color: var(--action); background: var(--white); box-shadow: 0 0 0 4px color-mix(in srgb, var(--action) 20%, transparent); }
+.form-label, .form-group label { font-weight: 600; color: var(--gray-900); }
+.card, .form-card, .cond-card, .contact-information, .contact-form-card { border-radius: var(--radius-lg); box-shadow: 0 1px 2px rgba(16, 24, 40, .04), 0 18px 40px -24px rgba(23, 35, 53, .18); }

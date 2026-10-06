@@ -1,0 +1,28 @@
+2026-10-06 09:44:12,194 - INFO - PKCE login: client_id=1069114930323-fdmpcnsfmushbhbsteakubl0g544fmim.apps.googleusercontent.com redirect_uri=http://localhost:5000/login/google/authorized verifier=True
+2026-10-06 09:44:14,144 - INFO - Token status=400 body={
+  "error": "invalid_request",
+  "error_description": "client_secret is missing."
+}
+2026-10-06 09:44:14,146 - WARNING - Échange de token échoué : {'error': 'invalid_request', 'error_description': 'client_secret is missing.'}
+2026-10-06 09:46:32,178 - INFO - PKCE login: client_id=client-id-test redirect_uri=https://emsp.example/login/google/authorized verifier=True
+2026-10-06 09:46:32,179 - INFO - Token status=200
+2026-10-06 09:46:32,295 - INFO - PKCE login: client_id=client-id-test redirect_uri=https://emsp.example/login/google/authorized verifier=True
+2026-10-06 09:46:32,295 - INFO - Token status=200
+2026-10-06 09:46:32,498 - INFO - PKCE login: client_id=client-id-test redirect_uri=https://emsp.example/login/google/authorized verifier=True
+2026-10-06 09:46:32,498 - INFO - Token status=200
+2026-10-06 09:46:32,591 - INFO - PKCE login: client_id=client-id-test redirect_uri=https://emsp.example/login/google/authorized verifier=True
+2026-10-06 09:46:32,592 - INFO - Token status=200
+2026-10-06 09:46:32,768 - INFO - PKCE login: client_id=client-id-test redirect_uri=https://emsp.example/login/google/authorized verifier=True
+2026-10-06 09:46:32,768 - WARNING - Google injoignable lors de l'échange du code.
+2026-10-06 09:48:55,419 - INFO - PKCE login: client_id=1069114930323-fdmpcnsfmushbhbsteakubl0g544fmim.apps.googleusercontent.com redirect_uri=http://localhost:5000/login/google/authorized verifier=True
+2026-10-06 09:48:57,165 - INFO - Token status=401
+2026-10-06 09:48:57,166 - WARNING - Échange de token échoué : {'error': 'invalid_client', 'error_description': 'The provided client secret is invalid.'}
+2026-10-06 11:11:51,692 - INFO - PKCE login: client_id=1069114930323-fdmpcnsfmushbhbsteakubl0g544fmim.apps.googleusercontent.com redirect_uri=http://localhost:5000/login/google/authorized verifier=True
+2026-10-06 11:11:53,016 - INFO - Token status=401
+2026-10-06 11:11:53,017 - WARNING - Échange de token échoué : {'error': 'invalid_client', 'error_description': 'The provided client secret is invalid.'}
+2026-10-06 11:16:38,471 - INFO - PKCE login: client_id=1069114930323-fdmpcnsfmushbhbsteakubl0g544fmim.apps.googleusercontent.com redirect_uri=http://localhost:5000/login/google/authorized verifier=True
+2026-10-06 11:16:39,778 - INFO - Token status=400
+2026-10-06 11:16:39,779 - WARNING - Échange de token échoué : {'error': 'invalid_request', 'error_description': 'client_secret is missing.'}
+2026-10-06 11:22:04,997 - INFO - PKCE login: client_id=1069114930323-fdmpcnsfmushbhbsteakubl0g544fmim.apps.googleusercontent.com redirect_uri=http://localhost:5000/login/google/authorized verifier=True
+2026-10-06 11:22:06,299 - INFO - Token status=401
+2026-10-06 11:22:06,300 - WARNING - Échange de token échoué : {'error': 'invalid_client', 'error_description': 'The provided client secret is invalid.'}

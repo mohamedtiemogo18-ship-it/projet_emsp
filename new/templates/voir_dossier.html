@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Dossier {{ dossier["numero_dossier"] }} | EMSP Abidjan{% endblock %}
+{% block body_class %}candidate-subpage{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/auth.css') }}">{% endblock %}
+{% block content %}
+<main class="auth-shell">
+    <section class="auth-brand" aria-labelledby="brand-title">
+        <div class="auth-brand__inner">
+            <a class="brand-lockup" href="{{ url_for('home') }}" aria-label="EMSP Abidjan, accueil">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EMSP Abidjan">
+            </a>
+            <p class="auth-eyebrow">Portail candidat · Dossier physique</p>
+            <h1 id="brand-title">{{ dossier["numero_dossier"] }}</h1>
+            <p>Chemin : {{ dossier["chemin_dossier"] }}</p>
+        </div>
+    </section>
+    <section class="auth-main" aria-labelledby="folder-title">
+        <div class="auth-main__content">
+            <p class="auth-kicker"><i class="bi bi-folder2-open" aria-hidden="true"></i> Contenu du dossier</p>
+            <h2 id="folder-title">Fichiers présents</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert"><span>{{ message }}</span></div>
+                {% endfor %}
+            {% endwith %}
+            <form method="post" action="{{ url_for('upload_fichier', dossier_id=dossier['id']) }}" enctype="multipart/form-data" class="mt-3">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="input-group">
+                    <input class="form-control" type="file" name="fichier" required>
+                    <button class="btn-primary" type="submit"><i class="bi bi-upload" aria-hidden="true"></i> Uploader</button>
+                </div>
+            </form>
+            {% if fichiers %}
+                <ul class="list-group mt-3">
+                    {% for fichier in fichiers %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-file-earmark" aria-hidden="true"></i> {{ fichier }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div class="alert alert-info mt-3">Ce dossier est vide.</div>
+            {% endif %}
+            <div class="mt-3">
+                <a href="{{ url_for('dossiers_physiques') }}" class="btn-secondary"><i class="bi bi-arrow-left" aria-hidden="true"></i> Retour à la liste</a>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
+{% block footer %}{% endblock %}

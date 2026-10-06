@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Mon profil | EMSP{% endblock %}
+{% block body_class %}profile-page{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/auth.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/profile.css') }}">
+{% endblock %}
+{% block content %}
+
+<main class="profile-main page-width" id="contenu">
+    <div class="profile-heading">
+        <div class="profile-avatar" aria-hidden="true">{{ ((values.prenoms or "")[:1] ~ (values.nom or "")[:1])|upper }}</div>
+        <p class="auth-kicker"><i class="bi bi-person-circle" aria-hidden="true"></i> Mon espace</p>
+        <h1>Mon profil</h1>
+        <p class="muted">Mettez à jour les coordonnées associées à votre compte.</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" role="{{ 'alert' if category == 'danger' else 'status' }}">
+                <i class="bi bi-{{ 'exclamation-triangle' if category == 'danger' else 'check-circle' }}" aria-hidden="true"></i>
+                <span>{{ message }}</span>
+            </div>
+        {% endfor %}
+    {% endwith %}
+
+    <form class="profile-form" method="post" action="{{ url_for('profil') }}" novalidate>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <section class="profile-card">
+            <div class="profile-card__heading">
+                <div class="profile-card__icon"><i class="bi bi-person-vcard" aria-hidden="true"></i></div>
+                <div>
+                    <h2>Informations personnelles</h2>
+                    <p>Ces informations servent à vous identifier.</p>
+                </div>
+            </div>
+
+            <div class="profile-grid">
+                <div class="form-group">
+                    <label for="nom">Nom <span class="required-mark" aria-hidden="true">*</span></label>
+                    <input id="nom" name="nom" class="form-control-custom" value="{{ values.nom }}" autocomplete="family-name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="prenoms">Prénoms <span class="required-mark" aria-hidden="true">*</span></label>
+                    <input id="prenoms" name="prenoms" class="form-control-custom" value="{{ values.prenoms }}" autocomplete="given-name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="telephone">Téléphone <span class="required-mark" aria-hidden="true">*</span></label>
+                    <input id="telephone" name="telephone" type="tel" inputmode="tel" class="form-control-custom" value="{{ values.telephone }}" autocomplete="tel" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Adresse email <span class="required-mark" aria-hidden="true">*</span></label>
+                    <input id="email" name="email" type="email" class="form-control-custom" value="{{ values.email }}" autocomplete="email" autocapitalize="off" required>
+                </div>
+            </div>
+        </section>
+
+        <details class="profile-card password-section">
+            <summary>
+                <div class="profile-card__icon"><i class="bi bi-shield-lock" aria-hidden="true"></i></div>
+                <div>
+                    <h2>Mot de passe</h2>
+                    <p>Laissez ces champs vides pour conserver votre mot de passe actuel.</p>
+                </div>
+            </summary>
+            <div class="password-content">
+                <div class="profile-grid">
+                    <div class="form-group">
+                        <label for="password">Nouveau mot de passe <span class="muted">(facultatif)</span></label>
+                        <div class="password-wrap">
+                            <input id="password" name="password" type="password" minlength="8" class="form-control-custom" autocomplete="new-password">
+                            <button type="button" class="password-toggle" aria-label="Afficher le mot de passe" data-target="password">
+                                <i class="bi bi-eye" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <span class="form-help">8 caractères minimum.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password_confirmation">Confirmer le nouveau mot de passe</label>
+                        <div class="password-wrap">
+                            <input id="password_confirmation" name="password_confirmation" type="password" minlength="8" class="form-control-custom" autocomplete="new-password">
+                            <button type="button" class="password-toggle" aria-label="Afficher le mot de passe" data-target="password_confirmation">
+                                <i class="bi bi-eye" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <div class="profile-actions">
+            <a class="btn-link-cancel" href="{{ url_for('admin' if candidate.is_admin else 'candidature') }}">Annuler</a>
+            <button class="btn-primary" type="submit"><i class="bi bi-check2" aria-hidden="true"></i> Enregistrer les modifications</button>
+        </div>
+    </form>
+</main>
+
+{% endblock %}
+{% block footer %}{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/profile.js') }}" defer></script>{% endblock %}

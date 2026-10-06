@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Dossier {{ candidature.numero_dossier }} | Administration EMSP{% endblock %}
+{% block body_class %}admin-page-shell{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/admin.css') }}">{% endblock %}
+{% block navbar %}{% endblock %}
+{% block content %}
+<main class="admin-page page-width">
+<nav class="admin-page-actions" aria-label="Navigation administrateur">
+<a class="btn-secondary" href="{{ url_for('admin') }}"><i class="bi bi-house" aria-hidden="true"></i> Tableau de bord</a>
+<a class="btn-secondary" href="{{ url_for('admin_candidatures') }}"><i class="bi bi-arrow-left" aria-hidden="true"></i> Retour aux candidatures</a>
+<a class="btn-secondary" href="{{ url_for('profil') }}"><i class="bi bi-person" aria-hidden="true"></i> Mon profil</a>
+<button class="theme-toggle" type="button" data-theme-toggle aria-label="Activer le thème sombre" title="Changer de thème" aria-pressed="false"><i class="bi bi-moon-stars-fill" aria-hidden="true"></i></button>
+<form method="post" action="{{ url_for('deconnexion') }}">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<button class="btn-secondary" type="submit"><i class="bi bi-box-arrow-right" aria-hidden="true"></i> Déconnexion</button>
+</form>
+</nav>
+<header class="admin-detail-header">
+<div>
+<p class="admin-kicker">Dossier candidat</p>
+<h1>{{ candidature.numero_dossier }}</h1>
+<p class="muted">{{ candidature.nom }} {{ candidature.prenoms }} · {{ candidature.email }}</p>
+</div>
+<span class="badge-status badge-status--{{ 'approved' if candidature.statut == 'validee' else 'rejected' if candidature.statut == 'rejetee' else 'submitted' if candidature.statut == 'soumise' else 'draft' }}">{{ candidature.statut }}</span>
+</header>
+<div class="admin-detail-grid">
+<section class="admin-panel">
+<h2>Décision administrative</h2>
+<form method="post" action="{{ url_for('admin_update', candidature_id=candidature.id) }}">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<div class="admin-fields">
+<label>Date de composition<input type="date" name="date_compo" value="{{ candidature.date_compo or '' }}">
+</label>
+<label>Centre<input name="centre_compo" value="{{ candidature.centre_compo or '' }}">
+</label>
+<label>Filière attribuée<select name="filiere_formation">
+<option value="">Sélectionner</option>{% for filiere in filieres %}<option value="{{ filiere }}"{% if candidature.filiere_formation == filiere %} selected{% endif %}>{{ filiere }}</option>{% endfor %}</select>
+</label>
+<label>Résultat<select name="admis_concours">
+<option value="0">Non admis</option>
+<option value="1"{% if candidature.admis_concours %} selected{% endif %}>Admis</option>
+</select>
+</label>
+</div>
+<div class="admin-actions">
+<button class="btn-primary" name="action" value="valider">Valider le dossier</button>
+<button class="btn-danger" name="action" value="rejeter">Rejeter</button>
+</div>
+</form>
+</section>
+<section class="admin-panel">
+<h2>Documents déposés</h2>
+<ul class="document-list">{% for document in documents %}<li>
+<i class="bi bi-file-earmark" aria-hidden="true">
+</i>
+<a href="{{ url_for('document', document_id=document.id) }}">{{ document.nom_original }}</a>
+</li>{% else %}<li class="muted">Aucun document déposé.</li>{% endfor %}</ul>
+</section>
+</div>
+</main>
+{% endblock %}
+{% block footer %}{% endblock %}

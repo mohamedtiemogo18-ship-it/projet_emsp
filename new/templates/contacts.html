@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% block title %}Nous contacter | EMSP{% endblock %}
+{% block body_class %}public-page{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/public.css') }}">{% endblock %}
+{% block content %}
+<section class="public-hero contact-hero">
+    <div class="page-width">
+        <p class="auth-eyebrow">EMSP · Assistance</p>
+        <h1>Nous sommes à votre écoute.</h1>
+        <p>Une question sur votre candidature ? Contactez notre équipe ou envoyez-nous un message.</p>
+    </div>
+</section>
+<main class="contact-content page-width" id="contenu">
+    <section class="contact-information" aria-labelledby="contact-info-title">
+        <p class="auth-kicker">Parlons de votre dossier</p>
+        <h2 id="contact-info-title">Coordonnées officielles</h2>
+
+        <div class="contact-grid">
+            <div class="contact-card">
+                <div class="contact-card__icon"><i class="bi bi-telephone" aria-hidden="true"></i></div>
+                <div>
+                    <span class="contact-label">Téléphone principal</span>
+                    <a href="tel:+2252721271003" class="contact-value">+225 27 21 27 10 03</a>
+                    <a href="tel:+2252721271004" class="contact-value">+225 27 21 27 10 04</a>
+                    <span class="contact-label" style="margin-top:8px">Secrétariat / Réception</span>
+                    <a href="tel:+2250708288080" class="contact-value">+225 07 08 28 80 80</a>
+                </div>
+            </div>
+
+            <div class="contact-card">
+                <div class="contact-card__icon"><i class="bi bi-envelope" aria-hidden="true"></i></div>
+                <div>
+                    <span class="contact-label">E-mail général</span>
+                    <a href="mailto:info@emsp.ci" class="contact-value">info@emsp.ci</a>
+                    <span class="contact-label" style="margin-top:8px">Assistance</span>
+                    <a href="mailto:emsp@emsp.ci" class="contact-value">emsp@emsp.ci</a>
+                </div>
+            </div>
+
+            <div class="contact-card">
+                <div class="contact-card__icon"><i class="bi bi-geo-alt" aria-hidden="true"></i></div>
+                <div>
+                    <span class="contact-label">Adresse géographique</span>
+                    <span class="contact-value">Abidjan, Côte d'Ivoire — Commune de Marcory, Boulevard de Marseille (en face de la SIB ou près du Jardin Public de Marcory, zone Zone 4 / Marcory)</span>
+                    <span class="contact-label" style="margin-top:8px">Adresse postale</span>
+                    <span class="contact-value">05 BP 2686 Abidjan 05</span>
+                </div>
+            </div>
+
+            <div class="contact-card">
+                <div class="contact-card__icon"><i class="bi bi-clock" aria-hidden="true"></i></div>
+                <div>
+                    <span class="contact-label">Horaires d'ouverture</span>
+                    <span class="contact-value">Lundi au vendredi : 08h00 – 12h30 | 13h30 – 16h30</span>
+                    <span class="contact-value">Samedi et Dimanche : Fermé</span>
+                </div>
+            </div>
+
+            <div class="contact-card">
+                <div class="contact-card__icon"><i class="bi bi-globe" aria-hidden="true"></i></div>
+                <div>
+                    <span class="contact-label">Site internet officiel</span>
+                    <a href="https://www.emsp.ci" target="_blank" rel="noopener noreferrer" class="contact-value">www.emsp.ci</a>
+                </div>
+            </div>
+        </div>
+
+        <section class="contact-services" aria-labelledby="contact-services-title">
+            <p class="auth-kicker">Services à contacter selon votre besoin</p>
+            <h2 id="contact-services-title">Orientation</h2>
+            <div class="services-grid">
+                <div class="service-card" data-service="scolarite">
+                    <div class="service-card__icon"><i class="bi bi-journal-arrow-up" aria-hidden="true"></i></div>
+                    <div class="service-card__header">
+                        <span class="service-card__title">Scolarité &amp; Inscriptions</span>
+                    </div>
+                    <div class="service-card__body">
+                        <span>Dépôt de dossiers, mémoires/PFE, attestations ou démarches académiques.</span>
+                    </div>
+                    <div class="service-card__footer">
+                        <span>Bureau de la Direction de la Formation et de la Recherche</span>
+                    </div>
+                </div>
+                <div class="service-card" data-service="dossier_physique">
+                    <div class="service-card__icon"><i class="bi bi-folder2-open" aria-hidden="true"></i></div>
+                    <div class="service-card__header">
+                        <span class="service-card__title">Dossiers physiques</span>
+                    </div>
+                    <div class="service-card__body">
+                        <span>Accès et suivi des dossiers stockés sur le serveur ou au secrétariat.</span>
+                    </div>
+                </div>
+                <div class="service-card" data-service="admission">
+                    <div class="service-card__icon"><i class="bi bi-person-workspace" aria-hidden="true"></i></div>
+                    <div class="service-card__header">
+                        <span class="service-card__title">Assistance candidat</span>
+                    </div>
+                    <div class="service-card__body">
+                        <span>Aide à la candidature, documents manquants et questions d’admission.</span>
+                    </div>
+                </div>
+                <div class="service-card" data-service="autre">
+                    <div class="service-card__icon"><i class="bi bi-building" aria-hidden="true"></i></div>
+                    <div class="service-card__header">
+                        <span class="service-card__title">Secrétariat / Réception</span>
+                    </div>
+                    <div class="service-card__body">
+                        <span>Accueil, orientation générale et renseignements administratifs.</span>
+                    </div>
+                    <div class="service-card__footer">
+                        <a class="contact-value" href="tel:+2250708288080">+225 07 08 28 80 80</a>
+                    </div>
+                </div>
+                <div class="service-card" data-service="paiement">
+                    <div class="service-card__icon"><i class="bi bi-credit-card" aria-hidden="true"></i></div>
+                    <div class="service-card__header">
+                        <span class="service-card__title">Paiement / Trésor Pay</span>
+                    </div>
+                    <div class="service-card__body">
+                        <span>Règlement des frais de candidature et questions de paiement en ligne.</span>
+                    </div>
+                </div>
+                <div class="service-card" data-service="scolarite">
+                    <div class="service-card__icon"><i class="bi bi-person-badge" aria-hidden="true"></i></div>
+                    <div class="service-card__header">
+                        <span class="service-card__title">Direction de la Formation et de la Recherche</span>
+                    </div>
+                    <div class="service-card__body">
+                        <span>Inscriptions, dépôt de dossiers, mémoires/PFE et démarches académiques.</span>
+                    </div>
+                    <div class="service-card__footer">
+                        <a class="contact-value" href="mailto:info@emsp.ci">info@emsp.ci</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+    <section class="contact-form-card" aria-labelledby="contact-form-title">
+        <p class="auth-kicker">Une réponse personnalisée</p>
+        <h2 id="contact-form-title">Envoyer un message</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" role="{{ 'alert' if category == 'danger' else 'status' }}"><span>{{ message }}</span></div>
+            {% endfor %}
+        {% endwith %}
+        <form id="contactForm" method="post" action="{{ url_for('contacts') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-group"><label for="nom">Nom et prénoms</label><input type="text" id="nom" name="nom" class="form-control" placeholder="Votre nom et prénoms" autocomplete="name" required></div>
+            <div class="form-group"><label for="email">Adresse e-mail</label><input type="email" id="email" name="email" class="form-control" placeholder="prenom.nom@example.com" autocomplete="email" required></div>
+            <div class="form-group"><label for="telephone">Téléphone</label><input type="tel" id="telephone" name="telephone" class="form-control" placeholder="+225 XX XX XX XX XX" autocomplete="tel"></div>
+            <div class="form-group"><label for="objet">Objet</label><select id="objet" name="objet" class="form-control" required><option value="">Sélectionnez un objet</option><option value="candidature">Candidature</option><option value="inscription">Inscription</option><option value="documents">Documents</option><option value="admission">Admission</option><option value="paiement">Paiement / Trésor Pay</option><option value="scolarite">Scolarité / Formation</option><option value="dossier_physique">Dossier physique</option><option value="autre">Autre demande</option></select></div>
+            <div class="form-group"><label for="message">Message</label><textarea id="message" name="message" class="form-control message-input" rows="4" maxlength="5000" placeholder="Saisissez votre message..." required></textarea></div>
+            <button type="submit" class="btn-send"><i class="bi bi-send" aria-hidden="true"></i><span>Envoyer le message</span></button>
+        </form>
+    </section>
+</main>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/contacts.js') }}" defer></script>{% endblock %}

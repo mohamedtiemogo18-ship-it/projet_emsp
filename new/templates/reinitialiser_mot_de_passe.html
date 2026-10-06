@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Nouveau mot de passe | EMSP{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/auth.css') }}">{% endblock %}
+{% block content %}
+<main class="auth-shell">
+    <section class="auth-brand" aria-labelledby="brand-title">
+        <div class="auth-brand__inner">
+            <a class="brand-lockup" href="{{ url_for('home') }}" aria-label="EMSP Abidjan, accueil">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EMSP Abidjan">
+            </a>
+            <p class="auth-eyebrow">Portail candidat · Session 2026</p>
+            <h1 id="brand-title">Choisissez un nouveau mot de passe.</h1>
+            <p>Après validation, vous pourrez vous connecter à votre espace candidat.</p>
+            <ul class="trust-list">
+                <li><i class="bi bi-shield-lock" aria-hidden="true"></i><span>8 caractères minimum</span></li>
+                <li><i class="bi bi-person-check" aria-hidden="true"></i><span>Votre dossier et vos informations restent protégés</span></li>
+            </ul>
+        </div>
+    </section>
+    <section class="auth-main" aria-labelledby="reset-title">
+        <div class="auth-main__content">
+            <p class="auth-kicker"><i class="bi bi-shield-lock" aria-hidden="true"></i> Sécurité du compte</p>
+            <h2 id="reset-title">Créer un nouveau mot de passe</h2>
+            <p class="auth-intro">Choisissez un mot de passe d’au moins 8 caractères et confirmez-le.</p>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="{{ 'alert' if category in ['danger', 'warning'] else 'status' }}">
+                        <i class="bi bi-{{ 'exclamation-triangle' if category in ['danger', 'warning'] else 'check-circle' }}" aria-hidden="true"></i>
+                        <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            {% endwith %}
+            <form method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="form-group">
+                    <label for="password">Nouveau mot de passe</label>
+                    <input id="password" type="password" name="password" class="form-control-custom" autocomplete="new-password" minlength="8" required>
+                    <span class="form-help">8 caractères minimum.</span>
+                </div>
+                <div class="form-group">
+                    <label for="password_confirmation">Confirmer le nouveau mot de passe</label>
+                    <input id="password_confirmation" type="password" name="password_confirmation" class="form-control-custom" autocomplete="new-password" minlength="8" required>
+                </div>
+                <button class="btn-login auth-submit" type="submit"><i class="bi bi-check2-circle" aria-hidden="true"></i><span>Enregistrer le nouveau mot de passe</span></button>
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock %}
+{% block footer %}{% endblock %}

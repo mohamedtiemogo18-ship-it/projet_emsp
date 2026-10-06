@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Dossiers physiques | Administration EMSP{% endblock %}
+{% block body_class %}admin-page-shell{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/admin.css') }}">{% endblock %}
+{% block navbar %}{% endblock %}
+{% block content %}
+	<main class="admin-page page-width">
+		<header class="admin-header">
+			<div>
+				<p class="admin-kicker">Espace administration</p>
+				<h1>Dossiers physiques</h1>
+				<p class="muted">Consultez les dossiers créés sur le serveur pour les utilisateurs.</p>
+			</div>
+			<nav class="admin-page-actions" aria-label="Actions administrateur">
+				<a class="btn-secondary" href="{{ url_for('admin') }}"><i class="bi bi-house" aria-hidden="true"></i> Tableau de bord</a>
+				<a class="btn-secondary" href="{{ url_for('profil') }}"><i class="bi bi-person" aria-hidden="true"></i> Mon profil</a>
+				<button class="theme-toggle" type="button" data-theme-toggle aria-label="Activer le thème sombre" title="Changer de thème" aria-pressed="false"><i class="bi bi-moon-stars-fill" aria-hidden="true"></i></button>
+				<form method="post" action="{{ url_for('deconnexion') }}">
+					<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+					<button class="btn-secondary" type="submit"><i class="bi bi-box-arrow-right" aria-hidden="true"></i> Déconnexion</button>
+				</form>
+			</nav>
+		</header>
+		{% with messages = get_flashed_messages(with_categories=true) %}
+			{% for category, message in messages %}
+				<div class="alert alert-{{ category }}" role="status">{{ message }}</div>
+			{% endfor %}
+		{% endwith %}
+		<div class="table-wrap">
+			<table class="admin-table">
+				<caption class="sr-only">Liste des dossiers physiques</caption>
+				<thead>
+					<tr><th>#</th><th>Numéro de dossier</th><th>Candidat</th><th>Email</th><th>Créé le</th><th>Chemin</th><th>Actions</th></tr>
+				</thead>
+				<tbody>
+					{% for dossier in dossiers %}
+						<tr>
+							<td>{{ dossier["id"] }}</td>
+							<td>{{ dossier["numero_dossier"] }}</td>
+							<td>{{ dossier["candidat_prenoms"] }} {{ dossier["candidat_nom"] }}</td>
+							<td>{{ dossier["candidat_email"] }}</td>
+							<td>{{ dossier["cree_le"] }}</td>
+							<td>{{ dossier["chemin_dossier"] }}</td>
+							<td><a class="btn-primary btn-sm" href="{{ url_for('admin_voir_dossier', dossier_id=dossier['id']) }}"><i class="bi bi-folder2-open" aria-hidden="true"></i> Ouvrir</a></td>
+						</tr>
+					{% else %}
+						<tr><td colspan="7"><div class="alert alert-info">Aucun dossier physique.</div></td></tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</main>
+{% endblock %}
+{% block footer %}{% endblock %}

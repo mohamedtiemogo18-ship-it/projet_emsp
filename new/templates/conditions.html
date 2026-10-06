@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Conditions d’admission | EMSP Abidjan{% endblock %}
+{% block body_class %}public-page{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/public.css') }}">{% endblock %}
+{% block content %}
+<main id="contenu">
+<section class="public-hero">
+<div class="page-width">
+<p class="auth-eyebrow">EMSP · Abidjan · Session 2026</p>
+<h1>Les conditions, en clair.</h1>
+<p>Tout ce qu’il faut savoir avant de commencer votre candidature.</p>
+<a class="btn-secondary" href="{{ url_for('inscription') }}">Commencer ma candidature <i class="bi bi-arrow-right" aria-hidden="true">
+</i>
+</a>
+</div>
+</section>
+<section class="public-content page-width">
+<div class="section-intro">
+<p class="auth-kicker">Le parcours</p>
+<h2>Votre candidature en 4 étapes</h2>
+</div>
+<div class="timeline">
+<article class="cond-card">
+<span class="step-number">1</span>
+<h3>Créer votre compte</h3>
+<p>Renseignez vos coordonnées et conservez le numéro de dossier généré.</p>
+</article>
+<article class="cond-card">
+<span class="step-number">2</span>
+<h3>Remplir le dossier</h3>
+<p>Complétez votre identité, votre BAC, vos choix de filière et vos tuteurs.</p>
+</article>
+<article class="cond-card">
+<span class="step-number">3</span>
+<h3>Déposer les pièces</h3>
+<p>Ajoutez des documents lisibles au format PDF, JPG ou PNG.</p>
+</article>
+<article class="cond-card">
+<span class="step-number">4</span>
+<h3>Suivre l'examen</h3>
+<p>Consultez l’état de votre dossier et votre convocation depuis votre espace.</p>
+</article>
+</div>
+<div class="conditions-grid">
+<article class="cond-card">
+<h3>
+<i class="bi bi-mortarboard" aria-hidden="true">
+</i> Conditions d'admission</h3>
+<ul>
+<li>Être titulaire du Baccalauréat ou du Brevet de Technicien.</li>
+<li>Avoir 23 ans au maximum au 31 décembre 2026.</li>
+<li>Les séries A, B, C, D, E, F et G sont acceptées.</li>
+</ul>
+</article>
+<article class="cond-card">
+<h3>
+<i class="bi bi-folder-check" aria-hidden="true">
+</i> Pièces à préparer</h3>
+<ul>
+<li>Pièce d'identité et acte de naissance.</li>
+<li>Attestation et relevé de notes du BAC.</li>
+<li>Photo d'identité et bulletins scolaires.</li>
+<li>Reçu de paiement des droits d'inscription.</li>
+</ul>
+</article>
+</div>
+<div class="cond-card">
+<h3>
+<i class="bi bi-question-circle" aria-hidden="true">
+</i> Questions fréquentes</h3>
+<details>
+<summary>Le dossier peut-il être complété plus tard ?</summary>
+<p>Oui. Enregistrez un brouillon et reconnectez-vous avec votre email ou votre numéro de dossier.</p>
+</details>
+<details>
+<summary>Quels formats de fichiers sont acceptés ?</summary>
+<p>Les fichiers PDF, JPG, JPEG et PNG de 5 Mo maximum sont acceptés.</p>
+</details>
+<details>
+<summary>Comment suivre l'examen du dossier ?</summary>
+<p>Votre espace candidat affiche le statut dès qu'une décision administrative est disponible.</p>
+</details>
+</div>
+<div class="public-cta">
+<h2>Prêt à commencer ?</h2>
+<p>La création du compte ne prend que quelques minutes.</p>
+<a class="btn-primary" href="{{ url_for('inscription') }}">Créer mon compte</a>
+</div>
+</section>
+</main>
+{% endblock %}

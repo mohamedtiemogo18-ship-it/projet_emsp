@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="fr" data-theme="light" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#18243A">
+    <title>{% block title %}EMSP | Portail candidat{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tokens.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    {% block styles %}{% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    <a class="skip-link" href="#contenu">Aller au contenu</a>
+    {% block navbar %}
+    <header class="site-header">
+        <div class="site-header__inner page-width">
+            <a class="brand-lockup" href="{{ url_for('home') }}" aria-label="EMSP Abidjan, accueil">
+                <img class="brand-logo-light" src="{{ url_for('static', filename='img/logo.svg') }}" alt="EMSP Abidjan">
+                <img class="brand-logo-dark" src="{{ url_for('static', filename='img/logo-dark.svg') }}" alt="">
+            </a>
+            <button class="site-menu-button" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-nav">
+                <i class="bi bi-list" aria-hidden="true"></i>
+                <span class="sr-only">Ouvrir le menu</span>
+            </button>
+            <nav id="site-nav" class="site-nav" aria-label="Navigation principale">
+                <a href="{{ url_for('conditions') }}"{% if request.endpoint == 'conditions' %} aria-current="page"{% endif %}><i class="bi bi-info-circle" aria-hidden="true"></i> Conditions</a>
+                {% if global_candidate %}
+                    <a href="{{ url_for('admin' if global_candidate.is_admin else 'candidature') }}"{% if request.endpoint == 'admin' or (request.endpoint == 'candidature' and not global_candidate.is_admin) %} aria-current="page"{% endif %}><i class="bi bi-{{ 'speedometer2' if global_candidate.is_admin else 'pencil-square' }}" aria-hidden="true"></i> {{ 'Administration' if global_candidate.is_admin else 'Candidature' }}</a>
+                {% else %}
+                    <a href="{{ url_for('inscription') }}"{% if request.endpoint == 'inscription' %} aria-current="page"{% endif %}><i class="bi bi-pencil-square" aria-hidden="true"></i> Candidature</a>
+                {% endif %}
+                <a href="{{ url_for('admis') }}"{% if request.endpoint == 'admis' %} aria-current="page"{% endif %}><i class="bi bi-award" aria-hidden="true"></i> Admis</a>
+                <a href="{{ url_for('contacts') }}"{% if request.endpoint == 'contacts' %} aria-current="page"{% endif %}><i class="bi bi-envelope" aria-hidden="true"></i> Contacts</a>
+            </nav>
+            <div class="site-header__actions">
+                {% if request.endpoint == 'candidature' %}
+                    <button id="sidebarToggle" class="candidate-sidebar-toggle" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="Afficher les étapes du dossier">
+                        <i class="bi bi-list" aria-hidden="true"></i>
+                    </button>
+                {% endif %}
+                {% if global_candidate %}
+                    <a class="workspace-link" href="{{ url_for('admin' if global_candidate.is_admin else 'candidature') }}">
+                        <i class="bi bi-grid-1x2" aria-hidden="true"></i>
+                        <span>{{ 'Administration' if global_candidate.is_admin else 'Mon dossier' }}</span>
+                    </a>
+                    <details class="account-menu">
+                        <summary class="account-menu__trigger" aria-label="Ouvrir le menu du compte">
+                            <span class="account-avatar"><i class="bi bi-person-fill" aria-hidden="true"></i></span>
+                            <span>Mon compte</span>
+                            <i class="bi bi-chevron-down account-menu__chevron" aria-hidden="true"></i>
+                        </summary>
+                        <div class="account-menu__panel">
+                            <span class="account-menu__email">{{ global_candidate.email }}</span>
+                            <a href="{{ url_for('profil') }}"><i class="bi bi-person" aria-hidden="true"></i> Mon profil</a>
+                            <form method="post" action="{{ url_for('deconnexion') }}">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit"><i class="bi bi-box-arrow-right" aria-hidden="true"></i> Déconnexion</button>
+                            </form>
+                        </div>
+                    </details>
+                {% else %}
+                    <a class="header-login" href="{{ url_for('connexion') }}">Connexion</a>
+                {% endif %}
+                <button class="theme-toggle" type="button" data-theme-toggle aria-label="Activer le thème sombre" aria-pressed="false">
+                    <i class="bi bi-moon-stars-fill" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    {% endblock %}
+    {% block content %}{% endblock %}
+    {% block footer %}
+    <footer class="site-footer">
+        <div class="page-width site-footer__inner">
+            <strong>EMSP — Abidjan</strong>
+            <nav aria-label="Liens de pied de page">
+                <a href="{{ url_for('contacts') }}">Nous contacter</a>
+                <a href="{{ url_for('conditions') }}">Conditions</a>
+                <a href="{{ url_for('admis') }}">Résultats</a>
+            </nav>
+        </div>
+    </footer>
+    {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="{{ url_for('static', filename='js/base.js') }}" defer></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

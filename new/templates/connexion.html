@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Connexion | EMSP Abidjan{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/auth.css') }}">{% endblock %}
+{% block content %}
+<main class="auth-shell">
+    <section class="auth-brand" aria-labelledby="brand-title">
+        <div class="auth-brand__inner">
+            <a class="brand-lockup" href="{{ url_for('home') }}" aria-label="EMSP Abidjan, accueil">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EMSP Abidjan">
+            </a>
+            <p class="auth-eyebrow">Portail candidat · Session 2026</p>
+            <h1 id="brand-title">Votre espace candidat.</h1>
+            <p>Retrouvez votre dossier, vos pièces et les prochaines étapes depuis un seul endroit.</p>
+            <ul class="trust-list">
+                <li><i class="bi bi-shield-check" aria-hidden="true"></i><span>Données traitées dans un espace sécurisé</span></li>
+                <li><i class="bi bi-folder-check" aria-hidden="true"></i><span>Dossier sauvegardé au fil de votre progression</span></li>
+                <li><i class="bi bi-headset" aria-hidden="true"></i><span>Une équipe disponible en cas de besoin</span></li>
+            </ul>
+        </div>
+    </section>
+    <section class="auth-main" aria-labelledby="login-title">
+        <div class="auth-main__content">
+            <p class="auth-kicker"><i class="bi bi-lock" aria-hidden="true"></i> Espace personnel</p>
+            <h2 id="login-title">Connectez-vous</h2>
+            <p class="auth-intro">Saisissez votre adresse e-mail ou votre numéro de dossier.</p>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}<div class="alert alert-{{ category }}" role="{{ 'alert' if category in ['danger', 'warning'] else 'status' }}"><i class="bi bi-{{ 'exclamation-triangle' if category in ['danger', 'warning'] else 'check-circle' }}" aria-hidden="true"></i><span>{{ message }}</span></div>{% endfor %}
+            {% endwith %}
+            <form id="loginForm" method="post" action="{{ url_for('connexion') }}" novalidate>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="next" value="{{ next_url }}">
+                <div class="form-group">
+                    <label for="identifiant">Numéro de dossier ou adresse email</label>
+                    <input type="text" id="identifiant" name="identifiant" class="form-control-custom" value="{{ request.args.get('identifiant', '') }}" placeholder="EMSP-2026-12345 ou vous@exemple.ci" autocomplete="username" autocapitalize="off" enterkeyhint="next" aria-describedby="identifiant-help" required>
+                    <span id="identifiant-help" class="form-help">Votre numéro figure dans le message reçu après la création du compte.</span>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <div class="password-wrap">
+                        <input type="password" id="password" name="password" class="form-control-custom" autocomplete="current-password" enterkeyhint="go" required>
+                        <button type="button" id="togglePassword" class="password-toggle" aria-label="Afficher le mot de passe" aria-pressed="false"><i class="bi bi-eye" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <div class="auth-options"><a href="{{ url_for('mot_de_passe_oublie') }}">Mot de passe oublié ?</a></div>
+                <button type="submit" class="btn-login auth-submit"><i class="bi bi-arrow-right-circle" aria-hidden="true"></i><span>Se connecter</span></button>
+            </form>
+            <div class="auth-divider"></div>
+            {% if google_enabled %}
+            <a href="{{ url_for('login_google') }}" class="btn-google auth-submit"><i class="bi bi-google" aria-hidden="true"></i><span>Continuer avec Google</span></a>
+            {% endif %}
+            <div class="auth-signup"><p>Vous n'avez pas encore de compte ?</p><a href="{{ url_for('inscription') }}" class="btn-create-account"><i class="bi bi-person-plus" aria-hidden="true"></i><span>Créer mon compte</span></a></div>
+        </div>
+    </section>
+</main>
+{% endblock %}
+{% block footer %}{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/connexion.js') }}" defer></script>{% endblock %}

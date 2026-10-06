@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Mot de passe oublié | EMSP{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/auth.css') }}">{% endblock %}
+{% block content %}
+<main class="auth-shell">
+    <section class="auth-brand" aria-labelledby="brand-title">
+        <div class="auth-brand__inner">
+            <a class="brand-lockup" href="{{ url_for('home') }}" aria-label="EMSP Abidjan, accueil">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EMSP Abidjan">
+            </a>
+            <p class="auth-eyebrow">Portail candidat · Session 2026</p>
+            <h1 id="brand-title">Retrouvez l’accès à votre dossier.</h1>
+            <p>Recevez un lien sécurisé pour choisir un nouveau mot de passe.</p>
+            <ul class="trust-list">
+                <li><i class="bi bi-shield-check" aria-hidden="true"></i><span>Le lien est personnel et temporaire</span></li>
+                <li><i class="bi bi-envelope-check" aria-hidden="true"></i><span>Vérifiez la boîte de réception de votre adresse</span></li>
+            </ul>
+        </div>
+    </section>
+    <section class="auth-main" aria-labelledby="reset-title">
+        <div class="auth-main__content">
+            <p class="auth-kicker"><i class="bi bi-key" aria-hidden="true"></i> Récupération du compte</p>
+            <h2 id="reset-title">Mot de passe oublié ?</h2>
+            <p class="auth-intro">Indiquez l’adresse e-mail associée à votre compte. Si elle existe, un lien de réinitialisation sera préparé.</p>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="{{ 'alert' if category in ['danger', 'warning'] else 'status' }}">
+                        <i class="bi bi-{{ 'exclamation-triangle' if category in ['danger', 'warning'] else 'check-circle' }}" aria-hidden="true"></i>
+                        <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            {% endwith %}
+            <form method="post" action="{{ url_for('mot_de_passe_oublie') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="form-group">
+                    <label for="email">Adresse e-mail</label>
+                    <input id="email" type="email" name="email" class="form-control-custom" autocomplete="email" placeholder="nom@exemple.ci" required>
+                </div>
+                <button class="btn-login auth-submit" type="submit"><i class="bi bi-envelope-arrow-up" aria-hidden="true"></i><span>Recevoir le lien</span></button>
+            </form>
+            <div class="auth-signup recovery-return"><a href="{{ url_for('connexion') }}"><i class="bi bi-arrow-left" aria-hidden="true"></i> Retour à la connexion</a></div>
+        </div>
+    </section>
+</main>
+{% endblock %}
+{% block footer %}{% endblock %}

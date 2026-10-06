@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Résultats d’admission | EMSP{% endblock %}
+{% block body_class %}public-page{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/public.css') }}">{% endblock %}
+{% block content %}
+<main id="contenu" class="public-content page-width">
+<section class="public-cta result-state">
+<p class="auth-kicker">
+<i class="bi bi-award" aria-hidden="true">
+</i> Admission EMSP</p>
+<h1>Résultats d'admission</h1>{% if not published %}<i class="bi bi-hourglass-split result-icon" aria-hidden="true">
+</i>
+<h2>Les résultats seront publiés prochainement.</h2>
+<p>Consultez régulièrement votre espace candidat pour connaître la suite de votre dossier.</p>{% elif result %}{% if result.admis_concours %}<i class="bi bi-check-circle result-icon result-icon--success" aria-hidden="true">
+</i>
+<h2>Votre candidature est admise.</h2>
+<p>Félicitations. Consultez les prochaines étapes dans votre espace.</p>{% else %}<i class="bi bi-info-circle result-icon" aria-hidden="true">
+</i>
+<h2>Votre candidature n'est pas admise.</h2>
+<p>Notre équipe reste disponible pour répondre à vos questions.</p>{% endif %}{% if result.filiere_formation %}<p>
+<strong>Filière attribuée :</strong> {{ result.filiere_formation }}</p>{% endif %}{% else %}<i class="bi bi-lock result-icon" aria-hidden="true">
+</i>
+<h2>Connectez-vous pour consulter votre résultat.</h2>
+<p>Votre résultat est personnel et ne peut être consulté qu'après connexion.</p>{% endif %}<a class="btn-primary" href="{{ url_for('home') }}">Retour à mon espace</a>
+</section>
+</main>
+{% endblock %}

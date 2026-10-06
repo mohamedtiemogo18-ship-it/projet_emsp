@@ -1,0 +1,37 @@
+:root {
+  --brand-900: #172335;
+  --brand-700: #315EAA;
+  --brand-600: #F2BF2F;
+  --brand-100: #EAF0FB;
+  --accent-500: #F2BF2F;
+  --action: #315FCC;
+  --action-hover: #264FAE;
+  --success-600: #157347;
+  --success-solid: #157347;
+  --success-100: #E9F7EF;
+  --warning-700: #B45309;
+  --warning-100: #FFF7E6;
+  --danger-600: #B42318;
+  --danger-100: #FEECEB;
+  --info-600: #285F9E;
+  --gray-900: #101828;
+  --gray-700: #344054;
+  --gray-500: #667085;
+  --gray-300: #D0D5DD;
+  --gray-200: #EAECF0;
+  --gray-100: #F2F4F7;
+  --gray-50: #F9FAFB;
+  --page: #F3F5F8;
+  --white: #FFFFFF;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px; --space-12: 48px;
+  --radius-sm: 6px; --radius-md: 10px; --radius-lg: 18px;
+  --shadow-card: 0 12px 36px rgba(23, 37, 59, .07);
+  --shadow-lift: 0 14px 36px rgba(24, 36, 58, .13);
+  --focus: 3px solid #285F9E;
+  --font: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Bricolage Grotesque", "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --bs-primary: var(--action); --bs-primary-rgb: 49, 95, 204;
+  --bs-border-radius: var(--radius-md);
+}

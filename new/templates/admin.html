@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Candidatures | Administration EMSP{% endblock %}
+{% block body_class %}admin-page-shell{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/admin.css') }}">{% endblock %}
+{% block navbar %}{% endblock %}
+{% block content %}
+  <main class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__brand">
+        <img src="{{ url_for('static', filename='img/logo-mark.svg') }}" alt="">
+        <div><strong>EMSP</strong><span>Administration</span></div>
+      </div>
+      <nav class="admin-sidebar__nav">
+        <a href="{{ url_for('admin') }}" class="admin-sidebar__link"><i class="bi bi-speedometer2" aria-hidden="true"></i> Tableau de bord</a>
+        <a href="{{ url_for('admin_candidatures') }}" class="admin-sidebar__link active"><i class="bi bi-people" aria-hidden="true"></i> Candidatures</a>
+        <a href="{{ url_for('admin_dossiers_physiques') }}" class="admin-sidebar__link"><i class="bi bi-folder2-open" aria-hidden="true"></i> Dossiers physiques</a>
+        <a href="{{ url_for('export_csv') }}" class="admin-sidebar__link"><i class="bi bi-download" aria-hidden="true"></i> Exporter CSV</a>
+      </nav>
+      <div class="admin-sidebar__footer">
+        <span class="badge-admin">Administrateur</span>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Activer le thème sombre" title="Changer de thème" aria-pressed="false"><i class="bi bi-moon-stars-fill" aria-hidden="true"></i></button>
+        <a href="{{ url_for('profil') }}" class="admin-sidebar__back"><i class="bi bi-person-circle" aria-hidden="true"></i> Mon profil</a>
+        <form method="post" action="{{ url_for('deconnexion') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="admin-sidebar__logout" type="submit"><i class="bi bi-box-arrow-right" aria-hidden="true"></i> Déconnexion</button>
+        </form>
+      </div>
+    </aside>
+
+    <section class="admin-content">
+      <header class="admin-content__header">
+        <div>
+          <p class="admin-kicker">Espace administration</p>
+          <h1>Suivi des candidatures</h1>
+          <p class="muted">Consultez les dossiers et intervenez sur leur statut.</p>
+        </div>
+      </header>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}" role="status">{{ message }}</div>
+        {% endfor %}
+      {% endwith %}
+
+      <section class="admin-toolbar" aria-label="Filtres des candidatures">
+        <form method="get">
+          <label for="recherche">Recherche</label>
+          <input id="recherche" name="recherche" value="{{ filters.recherche }}" placeholder="Nom ou numéro de dossier">
+          <label for="statut">Statut</label>
+          <select id="statut" name="statut">
+            <option value="">Tous les statuts</option>
+            {% for value in ['brouillon','soumise','validee','rejetee'] %}
+              <option value="{{ value }}"{% if filters.statut == value %} selected{% endif %}>{{ value }}</option>
+            {% endfor %}
+          </select>
+          <button class="btn-primary" type="submit"><i class="bi bi-funnel" aria-hidden="true"></i> Filtrer</button>
+        </form>
+        <form method="post" action="{{ url_for('toggle_results') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn-secondary" type="submit"><i class="bi bi-broadcast" aria-hidden="true"></i> Publier les résultats</button>
+        </form>
+      </section>
+
+      <div class="table-wrap">
+        <table class="admin-table">
+          <caption class="sr-only">Liste des candidatures</caption>
+          <thead>
+            <tr>
+              <th>Dossier</th>
+              <th>Candidat</th>
+              <th>Filière choisie</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in candidatures %}
+              <tr>
+                <td><a class="table-primary" href="{{ url_for('admin_candidature', candidature_id=row.id) }}">{{ row.numero_dossier }}</a></td>
+                <td>{{ row.candidat_nom }} {{ row.candidat_prenoms }}</td>
+                <td>{{ row.choix_1_filiere or 'Non renseignée' }}</td>
+                <td><span class="badge-status badge-status--{{ 'approved' if row.statut == 'validee' else 'rejected' if row.statut == 'rejetee' else 'submitted' if row.statut == 'soumise' else 'draft' }}">{{ row.statut }}</span></td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="4">
+                  <div class="empty-state">
+                    <i class="bi bi-inbox" aria-hidden="true"></i>
+                    <strong>Aucune candidature trouvée</strong>
+                    <span>Modifiez vos filtres pour élargir la recherche.</span>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+{% endblock %}
+{% block footer %}{% endblock %}

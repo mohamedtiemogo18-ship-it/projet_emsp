@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Mes dossiers physiques | EMSP Abidjan{% endblock %}
+{% block body_class %}candidate-subpage{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/auth.css') }}">{% endblock %}
+{% block content %}
+<main class="auth-shell">
+    <section class="auth-brand" aria-labelledby="brand-title">
+        <div class="auth-brand__inner">
+            <a class="brand-lockup" href="{{ url_for('home') }}" aria-label="EMSP Abidjan, accueil">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EMSP Abidjan">
+            </a>
+            <p class="auth-eyebrow">Portail candidat · Dossiers physiques</p>
+            <h1 id="brand-title">Vos dossiers physiques</h1>
+            <p>Consultez et gérez les dossiers créés sur le serveur pour votre compte.</p>
+        </div>
+    </section>
+    <section class="auth-main" aria-labelledby="folders-title">
+        <div class="auth-main__content">
+            <p class="auth-kicker"><i class="bi bi-folder2-open" aria-hidden="true"></i> Espace fichiers</p>
+            <h2 id="folders-title">Bonjour {{ candidate["prenoms"] }} {{ candidate["nom"] }}</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert"><span>{{ message }}</span></div>
+                {% endfor %}
+            {% endwith %}
+            {% if dossiers %}
+                <div class="list-group mt-3">
+                    {% for dossier in dossiers %}
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">{{ dossier["numero_dossier"] }}</h5>
+                                <small class="text-muted">Créé le {{ dossier["cree_le"] }}</small>
+                                <div class="text-muted">{{ dossier["chemin_dossier"] }}</div>
+                            </div>
+                            <a href="{{ url_for('voir_dossier', dossier_id=dossier['id']) }}" class="btn-primary"><i class="bi bi-folder2-open" aria-hidden="true"></i> Ouvrir</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info">Vous n'avez pas encore de dossier physique.</div>
+                <p>Un dossier est créé automatiquement lorsque vous vous connectez avec Google.</p>
+            {% endif %}
+            <div class="mt-3">
+                <a href="{{ url_for('candidature') }}" class="btn-secondary"><i class="bi bi-arrow-left" aria-hidden="true"></i> Retour à ma candidature</a>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
+{% block footer %}{% endblock %}

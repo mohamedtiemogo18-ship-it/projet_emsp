@@ -1,0 +1,7 @@
+instance/
+private_uploads/
+__pycache__/
+.venv/
+.env
+*.pyc
+.kilo/

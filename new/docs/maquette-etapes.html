@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Maquette – Étapes de candidature</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F4F6;
+  --surface:#FFFFFF;
+  --ink:#0F172A;
+  --muted:#64748B;
+  --accent:#D97706;
+  --accent-2:#F59E0B;
+  --border:#E2E8F0;
+  --ok:#10B981;
+  --shadow:0 20px 60px rgba(15,23,42,.08);
+  --radius:18px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:"Instrument Sans",system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+}
+.preview{
+  min-height:100vh;
+  padding:24px;
+  display:grid;
+  place-items:center;
+}
+.demo{
+  width:100%;
+  max-width:960px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.demo__header{
+  padding:24px 28px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+.demo__title{
+  margin:0;
+  font-size:18px;
+  font-weight:700;
+}
+.demo__badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  background:#FFFBEB;
+  color:#B45309;
+  font-weight:600;
+  font-size:14px;
+}
+.demo__body{
+  padding:28px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:24px;
+}
+.stepper{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  position:relative;
+}
+.stepper::before{
+  content:"";
+  position:absolute;
+  inset:24px 60px 0;
+  height:2px;
+  background:linear-gradient(90deg,var(--accent) 0%,var(--accent) 40%,var(--border) 40%);
+  border-radius:999px;
+}
+.step{
+  position:relative;
+  z-index:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  flex:1;
+}
+.step__icon{
+  width:48px;
+  height:48px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  background:#fff;
+  border:2px solid var(--border);
+  color:var(--muted);
+  font-weight:700;
+  transition:all .2s ease;
+}
+.step__label{
+  text-align:center;
+  font-weight:600;
+  font-size:13px;
+  color:var(--ink);
+  max-width:110px;
+}
+.step__sublabel{
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+  max-width:110px;
+}
+.step--done .step__icon{
+  background:#ECFDF5;
+  border-color:#6EE7B7;
+  color:#065F46;
+}
+.step--current .step__icon{
+  background:#FEF3C7;
+  border-color:var(--accent);
+  color:#92400E;
+}
+.step--upcoming .step__icon{
+  background:#F8FAFC;
+  border-color:var(--border);
+  color:var(--muted);
+}
+.progress{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  background:#F8FAFC;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:16px 18px;
+}
+.progress__track{
+  flex:1;
+  height:10px;
+  background:#E2E8F0;
+  border-radius:999px;
+  overflow:hidden;
+}
+.progress__fill{
+  width:25%;
+  height:100%;
+  background:linear-gradient(90deg,#F59E0B,#D97706);
+  border-radius:999px;
+}
+.progress__value{
+  font-weight:700;
+  min-width:48px;
+  text-align:right;
+}
+.actions{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.btn{
+  border:none;
+  padding:14px 18px;
+  border-radius:14px;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+}
+.btn--primary{
+  background:#2563EB;
+  color:#fff;
+}
+.btn--secondary{
+  background:#fff;
+  color:#0F172A;
+  border:1px solid var(--border);
+}
+.btn--ghost{
+  background:transparent;
+  color:#475569;
+}
+.section{
+  background:#F8FAFC;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:18px;
+}
+.section__title{
+  margin:0 0 4px;
+  font-size:16px;
+  font-weight:700;
+}
+.section__desc{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+}
+.variants{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:24px;
+}
+.variants__title{
+  margin:0 0 4px;
+  font-size:14px;
+  font-weight:700;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.variants__note{
+  margin:0 0 12px;
+  color:#475569;
+  font-size:13px;
+}
+</style>
+</head>
+<body>
+<div class="preview">
+  <div class="demo">
+    <div class="demo__header">
+      <div>
+        <p class="demo__title">Maquette – Étapes de candidature</p>
+      </div>
+      <span class="demo__badge">Design propre</span>
+    </div>
+    <div class="demo__body">
+      <div class="variants">
+        <div>
+          <p class="variants__title">Variante A – Barre d’étapes épurée</p>
+          <p class="variants__note">Idéale pour desktop : l’étape en cours est mise en évidence, la progression est linéaire.</p>
+
+          <div class="stepper">
+            <div class="step step--done">
+              <div class="step__icon">1</div>
+              <div>
+                <div class="step__label">Général</div>
+                <div class="step__sublabel">Identité</div>
+              </div>
+            </div>
+            <div class="step step--current">
+              <div class="step__icon">2</div>
+              <div>
+                <div class="step__label">BAC</div>
+                <div class="step__sublabel">Choix</div>
+              </div>
+            </div>
+            <div class="step step--upcoming">
+              <div class="step__icon">3</div>
+              <div>
+                <div class="step__label">Tuteurs</div>
+                <div class="step__sublabel">Responsables</div>
+              </div>
+            </div>
+            <div class="step step--upcoming">
+              <div class="step__icon">4</div>
+              <div>
+                <div class="step__label">Documents</div>
+                <div class="step__sublabel">Pièces</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="variants__title">Variante B – Progression + résumé des actions</p>
+          <p class="variants__note">Pour les utilisateurs qui préfèrent une vue plus courte et actionnable.</p>
+          <div class="progress">
+            <div>
+              <div style="font-weight:700;font-size:14px">Progression</div>
+              <div style="font-size:13px;color:var(--muted)">2 / 4 étapes</div>
+            </div>
+            <div class="progress__track"><div class="progress__fill"></div></div>
+            <div class="progress__value">25%</div>
+          </div>
+
+          <div class="actions" style="margin-top:18px">
+            <button class="btn btn--ghost"><i class="bi bi-arrow-left"></i> Précédent</button>
+            <button class="btn btn--primary">Suivant <i class="bi bi-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Dossier {{ dossier["numero_dossier"] }} | Administration EMSP{% endblock %}
+{% block body_class %}admin-page-shell{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/admin.css') }}">{% endblock %}
+{% block navbar %}{% endblock %}
+{% block content %}
+	<main class="admin-page page-width">
+		<header class="admin-header">
+			<div>
+				<p class="admin-kicker">Espace administration</p>
+				<h1>Dossier {{ dossier["numero_dossier"] }}</h1>
+				<p class="muted">Candidat : {{ dossier["candidat_prenoms"] }} {{ dossier["candidat_nom"] }} ({{ dossier["candidat_email"] }})</p>
+				<p class="muted">Chemin : {{ dossier["chemin_dossier"] }}</p>
+			</div>
+			<nav class="admin-page-actions" aria-label="Actions administrateur">
+				<a class="btn-secondary" href="{{ url_for('admin') }}"><i class="bi bi-house" aria-hidden="true"></i> Tableau de bord</a>
+				<a class="btn-secondary" href="{{ url_for('admin_dossiers_physiques') }}"><i class="bi bi-arrow-left" aria-hidden="true"></i> Retour à la liste</a>
+				<a class="btn-secondary" href="{{ url_for('profil') }}"><i class="bi bi-person" aria-hidden="true"></i> Mon profil</a>
+				<button class="theme-toggle" type="button" data-theme-toggle aria-label="Activer le thème sombre" title="Changer de thème" aria-pressed="false"><i class="bi bi-moon-stars-fill" aria-hidden="true"></i></button>
+				<form method="post" action="{{ url_for('deconnexion') }}">
+					<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+					<button class="btn-secondary" type="submit"><i class="bi bi-box-arrow-right" aria-hidden="true"></i> Déconnexion</button>
+				</form>
+			</nav>
+		</header>
+		{% with messages = get_flashed_messages(with_categories=true) %}
+			{% for category, message in messages %}
+				<div class="alert alert-{{ category }}" role="status">{{ message }}</div>
+			{% endfor %}
+		{% endwith %}
+		<div class="table-wrap">
+			<table class="admin-table">
+				<caption class="sr-only">Fichiers du dossier</caption>
+				<thead><tr><th>Fichier</th></tr></thead>
+				<tbody>
+					{% for fichier in fichiers %}
+						<tr><td><i class="bi bi-file-earmark" aria-hidden="true"></i> {{ fichier }}</td></tr>
+					{% else %}
+						<tr><td><div class="alert alert-info">Dossier vide.</div></td></tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</main>
+{% endblock %}
+{% block footer %}{% endblock %}

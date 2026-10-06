@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Créer un compte | EMSP Abidjan{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/auth.css') }}">{% endblock %}
+{% block content %}
+<main class="auth-shell">
+    <section class="auth-brand" aria-labelledby="brand-title">
+        <div class="auth-brand__inner">
+            <a class="brand-lockup" href="{{ url_for('home') }}" aria-label="EMSP Abidjan, accueil"><img src="{{ url_for('static', filename='img/logo.svg') }}" alt="EMSP Abidjan"></a>
+            <p class="auth-eyebrow">Candidature EMSP · Étape 1</p>
+            <h1 id="brand-title">Créez votre espace candidat.</h1>
+            <p>Votre numéro de dossier sera généré immédiatement et vous permettra de reprendre votre candidature.</p>
+            <ul class="trust-list"><li><i class="bi bi-check-circle" aria-hidden="true"></i><span>Création en moins de deux minutes</span></li><li><i class="bi bi-save" aria-hidden="true"></i><span>Votre dossier peut être complété progressivement</span></li><li><i class="bi bi-shield-check" aria-hidden="true"></i><span>Mot de passe protégé</span></li></ul>
+        </div>
+    </section>
+    <section class="auth-main" aria-labelledby="signup-title">
+        <div class="auth-main__content">
+            <p class="auth-kicker"><i class="bi bi-person-plus" aria-hidden="true"></i> Nouveau candidat</p>
+            <h2 id="signup-title">Créer mon compte</h2>
+            <p class="auth-intro">Utilisez une adresse email que vous consultez régulièrement.</p>
+            {% with messages = get_flashed_messages(with_categories=true) %}{% for category, message in messages %}<div class="alert alert-{{ category }}" role="{{ 'alert' if category in ['danger', 'warning'] else 'status' }}"><i class="bi bi-{{ 'exclamation-triangle' if category in ['danger', 'warning'] else 'check-circle' }}" aria-hidden="true"></i><span>{{ message }}</span></div>{% endfor %}{% endwith %}
+            <form method="post" action="{{ url_for('inscription') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="form-group"><label for="nom">Nom</label><input class="form-control-custom" id="nom" name="nom" value="{{ values.get('nom', '') }}" autocomplete="family-name" required></div>
+                <div class="form-group"><label for="prenoms">Prénoms</label><input class="form-control-custom" id="prenoms" name="prenoms" value="{{ values.get('prenoms', '') }}" autocomplete="given-name" required></div>
+                <div class="form-group"><label for="telephone">Téléphone</label><input class="form-control-custom" id="telephone" name="telephone" value="{{ values.get('telephone', '') }}" type="tel" inputmode="tel" autocomplete="tel" placeholder="0700000000" required></div>
+                <div class="form-group"><label for="email">Adresse email</label><input type="email" class="form-control-custom" id="email" name="email" value="{{ values.get('email', '') }}" autocomplete="email" autocapitalize="off" required></div>
+                <div class="form-group"><label for="password">Mot de passe</label><input type="password" class="form-control-custom" id="password" name="password" minlength="8" autocomplete="new-password" aria-describedby="password-help" required><span id="password-help" class="form-help">8 caractères minimum.</span></div>
+                <div class="form-group"><label for="password_confirmation">Confirmer le mot de passe</label><input type="password" class="form-control-custom" id="password_confirmation" name="password_confirmation" minlength="8" autocomplete="new-password" required></div>
+                <button type="submit" class="btn-login auth-submit"><i class="bi bi-arrow-right-circle" aria-hidden="true"></i><span>Créer mon compte</span></button>
+            </form>
+            {% if google_enabled %}
+            <div class="auth-divider"></div>
+            <a href="{{ url_for('login_google') }}" class="btn-google auth-submit"><i class="bi bi-google" aria-hidden="true"></i><span>Continuer avec Google</span></a>
+            {% endif %}
+            <div class="auth-divider"></div><div class="auth-signup"><p>Vous avez déjà un compte ?</p><a href="{{ url_for('connexion') }}" class="btn-create-account"><i class="bi bi-box-arrow-in-right" aria-hidden="true"></i><span>Se connecter</span></a></div>
+        </div>
+    </section>
+</main>
+{% endblock %}
+{% block footer %}{% endblock %}

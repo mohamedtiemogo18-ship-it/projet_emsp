@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Système de design | EMSP{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/public.css') }}">{% endblock %}
+{% block content %}
+<main class="page-width public-content">
+    <p class="muted">Mode debug uniquement</p>
+    <h1>Composants EMSP</h1>
+    <section class="card p-4 mb-4"><h2>Boutons</h2><button class="btn-primary">Action principale</button> <button class="btn-secondary">Action secondaire</button> <button class="btn-danger">Action sensible</button></section>
+    <section class="card p-4 mb-4"><h2>Statuts</h2><span class="badge-status badge-status--draft">Brouillon</span> <span class="badge-status badge-status--submitted">Soumis</span> <span class="badge-status badge-status--approved">Validé</span> <span class="badge-status badge-status--rejected">Rejeté</span></section>
+    <section class="card p-4 mb-4"><h2>Formulaire</h2><label class="form-label" for="demo">Adresse email</label><input id="demo" class="form-control" type="email" placeholder="prenom.nom@example.org"><span class="form-help">Utilisée uniquement pour le suivi de votre dossier.</span></section>
+    <section class="alert alert-info"><strong>Information :</strong> les messages associent toujours une icône, une couleur et un texte.</section>
+</main>
+{% endblock %}

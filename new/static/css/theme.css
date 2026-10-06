@@ -1,0 +1,180 @@
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0b1220;
+  --white: #121d2e;
+  --gray-900: #edf3fc;
+  --gray-700: #c0ccdc;
+  --gray-500: #9ba9bc;
+  --gray-300: #3b4b62;
+  --gray-200: #29394e;
+  --gray-100: #1d2a3d;
+  --gray-50: #18243a;
+  --brand-100: #28364c;
+  --brand-700: #8bbcf1;
+  --info-600: #8bbcf1;
+  --shadow-card: 0 12px 36px rgba(0, 0, 0, .2);
+  --shadow-lift: 0 14px 36px rgba(0, 0, 0, .3);
+  --bs-body-bg: var(--page);
+  --bs-body-color: var(--gray-900);
+  --bs-border-color: var(--gray-200);
+  --bs-tertiary-bg: var(--gray-100);
+  --light: var(--page);
+  --text: var(--gray-900);
+  --muted: var(--gray-500);
+  --border: var(--gray-200);
+  --sidebar: #080e19;
+}
+
+:root[data-theme="dark"] body { background: var(--page); color: var(--gray-900); }
+:root[data-theme="dark"] .site-header { border-color: var(--gray-200); background: rgba(18, 29, 46, .96); }
+:root[data-theme="dark"] .brand-logo-light { display: none; }
+:root[data-theme="dark"] .brand-logo-dark { display: inline-block; }
+:root[data-theme="dark"] .brand-lockup { color: var(--gray-900); }
+:root[data-theme="dark"] .auth-brand,
+:root[data-theme="dark"] .public-hero,
+:root[data-theme="dark"] #sidebar,
+:root[data-theme="dark"] .admin-sidebar { color: #f7f9fc; }
+:root[data-theme="dark"] .auth-brand h1,
+:root[data-theme="dark"] .auth-brand .brand-lockup,
+:root[data-theme="dark"] .admin-sidebar__brand strong,
+:root[data-theme="dark"] #sidebar .sidebar-header h5 { color: #f7f9fc; }
+:root[data-theme="dark"] .admin-logo-light { display: none; }
+:root[data-theme="dark"] .admin-logo-dark { display: block; }
+:root[data-theme="dark"] .site-nav a,
+:root[data-theme="dark"] .site-nav__button { color: var(--gray-700); }
+:root[data-theme="dark"] .site-nav a[aria-current="page"],
+:root[data-theme="dark"] .site-nav a:hover,
+:root[data-theme="dark"] .site-nav__button:hover { color: var(--brand-700); }
+:root[data-theme="dark"] .theme-toggle,
+:root[data-theme="dark"] .site-menu-button { border-color: var(--gray-200); background: var(--gray-100); color: var(--gray-700); }
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .form-card,
+:root[data-theme="dark"] .cond-card,
+:root[data-theme="dark"] .contact-information,
+:root[data-theme="dark"] .contact-form-card,
+:root[data-theme="dark"] .profile-card,
+:root[data-theme="dark"] .admin-panel,
+:root[data-theme="dark"] .admin-toolbar,
+:root[data-theme="dark"] .admin-stat,
+:root[data-theme="dark"] .admin-storage,
+:root[data-theme="dark"] .candidate-overview,
+:root[data-theme="dark"] .progress-card,
+:root[data-theme="dark"] .convocation-card,
+:root[data-theme="dark"] .result-state,
+:root[data-theme="dark"] .public-cta { border-color: var(--gray-200); background: var(--white); color: var(--gray-900); box-shadow: var(--shadow-card); }
+:root[data-theme="dark"] .form-card .card-header,
+:root[data-theme="dark"] .admin-table,
+:root[data-theme="dark"] .admin-table th { border-color: var(--gray-200); background: var(--gray-100); color: var(--gray-900); }
+:root[data-theme="dark"] .admin-table td { border-color: var(--gray-200); color: var(--gray-700); }
+:root[data-theme="dark"] .admin-content__header h1,
+:root[data-theme="dark"] .admin-panel h2,
+:root[data-theme="dark"] .profile-heading h1,
+:root[data-theme="dark"] .profile-card__heading h2,
+:root[data-theme="dark"] .section-title h3,
+:root[data-theme="dark"] .auth-main__content h2,
+:root[data-theme="dark"] .cond-card h3,
+:root[data-theme="dark"] .section-intro h2,
+:root[data-theme="dark"] .public-cta h2,
+:root[data-theme="dark"] .contact-information h2,
+:root[data-theme="dark"] .contact-form-card h2,
+:root[data-theme="dark"] .result-state h1 { color: var(--gray-900); }
+:root[data-theme="dark"] .form-control,
+:root[data-theme="dark"] .form-select,
+:root[data-theme="dark"] .form-control-custom,
+:root[data-theme="dark"] .admin-toolbar input,
+:root[data-theme="dark"] .admin-toolbar select { border-color: var(--gray-300); background: #0e1726; color: var(--gray-900); }
+:root[data-theme="dark"] .form-control::placeholder,
+:root[data-theme="dark"] .form-control-custom::placeholder { color: var(--gray-500); }
+:root[data-theme="dark"] .dropdown-menu { border-color: var(--gray-200); background: var(--white); }
+:root[data-theme="dark"] .dropdown-item { color: var(--gray-700); }
+:root[data-theme="dark"] .dropdown-item:hover { background: var(--brand-100); color: var(--gray-900); }
+:root[data-theme="dark"] .site-footer { background: #080e19; }
+:root[data-theme="dark"] .site-footer,
+:root[data-theme="dark"] .site-footer a,
+:root[data-theme="dark"] .btn-primary,
+:root[data-theme="dark"] .btn-login,
+:root[data-theme="dark"] .btn-send,
+:root[data-theme="dark"] .btn-danger { color: #fff; }
+:root[data-theme="dark"] .sidebar-toggle,
+:root[data-theme="dark"] .profile-nav-button { border-color: var(--gray-200); background: var(--gray-100); color: var(--gray-900); }
+:root[data-theme="dark"] .candidate-sidebar-toggle { border-color: var(--gray-200); background: var(--gray-100); color: var(--gray-900); }
+:root[data-theme="dark"] #main-content,
+:root[data-theme="dark"] .content-container,
+:root[data-theme="dark"] .app-shell { background: var(--page); color: var(--gray-900); }
+:root[data-theme="dark"] .horizontal-menu { border-color: var(--gray-200); background: var(--white); }
+:root[data-theme="dark"] #main-content .card,
+:root[data-theme="dark"] #main-content .form-card,
+:root[data-theme="dark"] #main-content .card-body { border-color: var(--gray-200); background: var(--white); color: var(--gray-900); }
+:root[data-theme="dark"] #main-content .card-header { border-color: var(--gray-200); background: var(--gray-100); color: var(--gray-900); }
+:root[data-theme="dark"] #main-content label,
+:root[data-theme="dark"] #main-content .form-label { color: var(--gray-700); }
+:root[data-theme="dark"] .btn-outline-secondary { border-color: var(--gray-300); color: var(--gray-700); }
+:root[data-theme="dark"] .btn-outline-secondary:hover { background: var(--gray-100); color: var(--gray-900); }
+
+.site-nav form { display: flex; align-items: center; margin: 0; }
+.site-nav__button { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 9px 12px; border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--gray-700); font: inherit; font-weight: 600; cursor: pointer; }
+.site-nav__button:hover { background: var(--brand-100); color: var(--brand-700); }
+.theme-toggle { display: inline-grid; flex: 0 0 40px; width: 40px; height: 40px; place-items: center; margin-left: 8px; border: 1px solid var(--gray-200); border-radius: 50%; background: var(--white); color: var(--gray-700); cursor: pointer; transition: transform .2s ease, border-color .2s ease, color .2s ease; }
+.theme-toggle:hover { transform: translateY(-1px); border-color: var(--brand-700); color: var(--brand-700); }
+.site-footer__inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.site-footer__inner nav { display: flex; gap: 18px; }
+@media (max-width: 760px) {
+  .site-nav__button { width: 100%; }
+  .theme-toggle { margin-left: auto; }
+  .site-footer__inner { align-items: flex-start; flex-direction: column; }
+  .site-footer__inner nav { flex-wrap: wrap; gap: 10px 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-aos] { opacity: 1 !important; transform: none !important; }
+}
+/* ===== Refonte finale : thème sombre pour les nouveaux composants ===== */
+:root[data-theme="dark"] {
+  --success-600: #5BDB9C; --success-100: #12301F;
+  --danger-600: #FF8A80; --danger-100: #3A1816;
+  --warning-700: #F5B25B; --warning-100: #35260F;
+  --accent-text: #F2BF2F;
+}
+:root[data-theme="dark"] .candidate-overview h1,
+:root[data-theme="dark"] .section-title h3,
+:root[data-theme="dark"] .form-card .card-header,
+:root[data-theme="dark"] .admin-stat__value,
+:root[data-theme="dark"] .admin-metrics .admin-stat__value,
+:root[data-theme="dark"] .profile-card__heading h2,
+:root[data-theme="dark"] .password-section summary h2,
+:root[data-theme="dark"] .result-state h1,
+:root[data-theme="dark"] .candidate-progress__top span { color: var(--gray-900); }
+:root[data-theme="dark"] .admin-metrics .admin-stat--primary .admin-stat__value { color: var(--accent-500); }
+:root[data-theme="dark"] .save-state, :root[data-theme="dark"] .navigation-buttons { border-color: var(--gray-200); background: color-mix(in srgb, var(--white) 88%, transparent); }
+:root[data-theme="dark"] .btn-success, :root[data-theme="dark"] .document-upload.file-selected .document-icon { background: var(--success-solid); color: #fff; }
+:root[data-theme="dark"] .form-control, :root[data-theme="dark"] .form-select, :root[data-theme="dark"] .form-control-custom { background: var(--gray-50); color: var(--gray-900); }
+:root[data-theme="dark"] .admin-table tbody tr:hover td { background: var(--gray-100); }
+:root[data-theme="dark"] .list-group-item { background: var(--white); color: var(--gray-900); border-color: var(--gray-200); }
+
+/* ===== Correctifs thème sombre issus de l'audit de contraste ===== */
+:root[data-theme="dark"] a:hover,
+:root[data-theme="dark"] .recovery-return a:hover { color: var(--gray-900); }
+:root[data-theme="dark"] .auth-main__content h2,
+:root[data-theme="dark"] .login-header h2,
+:root[data-theme="dark"] .admin-content__header h1,
+:root[data-theme="dark"] .admin-panel h2,
+:root[data-theme="dark"] .auth-main__content .list-group-item h5,
+:root[data-theme="dark"] .page-heading h1,
+:root[data-theme="dark"] .profile-heading h1,
+:root[data-theme="dark"] .section-intro h2,
+:root[data-theme="dark"] .public-cta h2,
+:root[data-theme="dark"] .cond-card h3,
+:root[data-theme="dark"] .cond-card summary,
+:root[data-theme="dark"] .contact-header h2,
+:root[data-theme="dark"] .contact-information h2,
+:root[data-theme="dark"] .contact-form-card h2 { color: var(--gray-900); }
+:root[data-theme="dark"] .document-upload:hover { background: var(--gray-100); }
+:root[data-theme="dark"] .admin-action-row:hover { color: var(--brand-700); }
+:root[data-theme="dark"] .form-control:focus,
+:root[data-theme="dark"] .form-select:focus,
+:root[data-theme="dark"] .form-control-custom:focus,
+:root[data-theme="dark"] .admin-fields input:focus,
+:root[data-theme="dark"] .admin-fields select:focus { border-color: var(--brand-700); box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand-700) 28%, transparent); }
+:root[data-theme="dark"] .list-group-item:hover,
+:root[data-theme="dark"] .candidate-subpage .input-group:hover,
+:root[data-theme="dark"] .candidate-subpage .input-group:focus-within { border-color: var(--brand-700); }
