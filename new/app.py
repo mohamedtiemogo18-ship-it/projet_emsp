@@ -46,7 +46,7 @@ INSTANCE_DIR = Path("/tmp/instance") if os.environ.get("VERCEL") else BASE_DIR /
 UPLOAD_DIR = Path("/tmp/private_uploads") if os.environ.get("VERCEL") else BASE_DIR / "private_uploads"
 SCHEMA_FILE = BASE_DIR / "schema.sql"
 INSTANCE_DIR.mkdir(parents=True, exist_ok=True)
-UPLOAD_DIR.mkdir(exist_ok=True)
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__)
 configured_secret = os.environ.get("EMSP_SECRET_KEY")
@@ -81,7 +81,7 @@ app.config.update(
 )
 csrf = CSRFProtect(app)
 
-log_path = BASE_DIR / "logs" / "google_oauth.log"
+log_path = Path("/tmp/logs/google_oauth.log") if os.environ.get("VERCEL") else BASE_DIR / "logs" / "google_oauth.log"
 log_path.parent.mkdir(parents=True, exist_ok=True)
 google_logger = logging.getLogger("google_oauth")
 google_logger.setLevel(logging.INFO)
