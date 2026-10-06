@@ -26,3 +26,8 @@
 2026-10-06 11:22:04,997 - INFO - PKCE login: client_id=1069114930323-fdmpcnsfmushbhbsteakubl0g544fmim.apps.googleusercontent.com redirect_uri=http://localhost:5000/login/google/authorized verifier=True
 2026-10-06 11:22:06,299 - INFO - Token status=401
 2026-10-06 11:22:06,300 - WARNING - Échange de token échoué : {'error': 'invalid_client', 'error_description': 'The provided client secret is invalid.'}
+2026-10-06 22:57:59,063 - INFO - Token status=200
+2026-10-06 22:57:59,094 - INFO - Token status=200
+2026-10-06 22:57:59,229 - INFO - Token status=200
+2026-10-06 22:57:59,264 - INFO - Token status=200
+2026-10-06 22:57:59,467 - WARNING - Google injoignable lors de l'échange du code.

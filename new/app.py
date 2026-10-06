@@ -42,10 +42,10 @@ from utils import creer_dossier_utilisateur
 
 BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / ".env")
-INSTANCE_DIR = BASE_DIR / "instance"
+INSTANCE_DIR = Path("/tmp/instance") if os.environ.get("VERCEL") else BASE_DIR / "instance"
 UPLOAD_DIR = BASE_DIR / "private_uploads"
 SCHEMA_FILE = BASE_DIR / "schema.sql"
-INSTANCE_DIR.mkdir(exist_ok=True)
+INSTANCE_DIR.mkdir(parents=True, exist_ok=True)
 UPLOAD_DIR.mkdir(exist_ok=True)
 
 app = Flask(__name__)
