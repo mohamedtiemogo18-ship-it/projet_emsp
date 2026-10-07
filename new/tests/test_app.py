@@ -43,6 +43,62 @@ def test_rejects_executable_upload(client):
 
 def test_private_files_are_not_exposed(client):
     assert client.get("/app.py").status_code == 404
+
+
+def test_postgres_connection_adapts_placeholders():
+    import app as app_module
+
+    class FakeConnection:
+        query = None
+        parameters = None
+
+        def execute(self, query, parameters):
+            self.query = query
+            self.parameters = parameters
+            return self
+
+    raw_connection = FakeConnection()
+    database = app_module.DatabaseConnection(raw_connection, is_postgres=True)
+    database.execute("SELECT * FROM candidats WHERE id = ? AND email = ?", (7, "admin@example.org"))
+
+    assert raw_connection.query == "SELECT * FROM candidats WHERE id = %s AND email = %s"
+    assert raw_connection.parameters == (7, "admin@example.org")
+
+
+def test_create_admin_command_promotes_account(client):
+    import app as app_module
+
+    csrf = token(client, "/inscription")
+    client.post("/inscription", data={
+        "csrf_token": csrf,
+        "nom": "Admin",
+        "prenoms": "Test",
+        "telephone": "0700000000",
+        "email": "admin-command@example.org",
+        "password": "password123",
+        "password_confirmation": "password123",
+    })
+    result = app_module.app.test_cli_runner().invoke(
+        args=["create-admin", "--email", "admin-command@example.org"],
+        input="new-password123\nnew-password123\n",
+    )
+
+    assert result.exit_code == 0
+    with app_module.app.app_context():
+        candidate = app_module.get_db().execute(
+            "SELECT is_admin, mot_de_passe FROM candidats WHERE email = ?",
+            ("admin-command@example.org",),
+        ).fetchone()
+    assert candidate["is_admin"] == 1
+    assert candidate["mot_de_passe"] != "new-password123"
+    csrf = token(client, "/connexion")
+    response = client.post("/connexion", data={
+        "csrf_token": csrf,
+        "identifiant": "admin-command@example.org",
+        "password": "new-password123",
+    })
+    assert response.status_code == 302
+    assert response.headers["Location"].endswith("/admin")
     assert client.get("/schema.sql").status_code == 404
     assert client.get("/uploads/test").status_code == 404
 

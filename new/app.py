@@ -18,6 +18,8 @@ from functools import wraps
 from pathlib import Path
 from urllib.parse import urlparse
 
+import psycopg
+from psycopg.rows import dict_row
 from dotenv import load_dotenv
 from flask import (
     Flask,
@@ -45,6 +47,7 @@ load_dotenv(BASE_DIR / ".env")
 INSTANCE_DIR = Path("/tmp/instance") if os.environ.get("VERCEL") else BASE_DIR / "instance"
 UPLOAD_DIR = Path("/tmp/private_uploads") if os.environ.get("VERCEL") else BASE_DIR / "private_uploads"
 SCHEMA_FILE = BASE_DIR / "schema.sql"
+POSTGRES_SCHEMA_FILE = BASE_DIR / "schema_postgres.sql"
 INSTANCE_DIR.mkdir(parents=True, exist_ok=True)
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -56,6 +59,7 @@ app.config.update(
     DEBUG=os.environ.get("FLASK_DEBUG", "0") == "1",
     SECRET_KEY=configured_secret or secrets.token_hex(32),
     DATABASE=str(INSTANCE_DIR / "emsp.sqlite3"),
+    DATABASE_URL=os.environ.get("DATABASE_URL", "").strip(),
     MAX_CONTENT_LENGTH=50 * 1024 * 1024,
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE="Lax",
@@ -80,6 +84,9 @@ app.config.update(
     GOOGLE_REDIRECT_URI=os.environ.get("GOOGLE_REDIRECT_URI") or ((os.environ.get("PUBLIC_BASE_URL", "").rstrip("/") + "/login/google/authorized") if os.environ.get("PUBLIC_BASE_URL", "").strip() else "http://localhost:5000/login/google/authorized"),
 )
 csrf = CSRFProtect(app)
+
+if os.environ.get("VERCEL") and not app.config["DATABASE_URL"]:
+    app.logger.warning("DATABASE_URL n'est pas configurée. La base SQLite temporaire ne conservera pas les données sur Vercel.")
 
 log_path = Path("/tmp/logs/google_oauth.log") if os.environ.get("VERCEL") else BASE_DIR / "logs" / "google_oauth.log"
 log_path.parent.mkdir(parents=True, exist_ok=True)
@@ -129,11 +136,34 @@ MAGIC_BYTES = {
 login_failures: dict[tuple[str, str], list[datetime]] = {}
 
 
-def get_db() -> sqlite3.Connection:
+class DatabaseConnection:
+    def __init__(self, connection, is_postgres: bool):
+        self.connection = connection
+        self.is_postgres = is_postgres
+
+    def execute(self, query: str, parameters=()):
+        if self.is_postgres:
+            query = query.replace("?", "%s")
+        return self.connection.execute(query, parameters)
+
+    def commit(self) -> None:
+        self.connection.commit()
+
+    def close(self) -> None:
+        self.connection.close()
+
+
+def get_db() -> DatabaseConnection:
     if "db" not in g:
-        g.db = sqlite3.connect(app.config["DATABASE"])
-        g.db.row_factory = sqlite3.Row
-        g.db.execute("PRAGMA foreign_keys = ON")
+        database_url = app.config["DATABASE_URL"]
+        if database_url:
+            connection = psycopg.connect(database_url, row_factory=dict_row, connect_timeout=10, prepare_threshold=None)
+            g.db = DatabaseConnection(connection, is_postgres=True)
+        else:
+            connection = sqlite3.connect(app.config["DATABASE"])
+            connection.row_factory = sqlite3.Row
+            connection.execute("PRAGMA foreign_keys = ON")
+            g.db = DatabaseConnection(connection, is_postgres=False)
     return g.db
 
 
@@ -146,7 +176,10 @@ def close_db(_error=None) -> None:
 
 def init_db() -> None:
     with app.app_context():
-        get_db().executescript(SCHEMA_FILE.read_text(encoding="utf-8"))
+        schema_file = POSTGRES_SCHEMA_FILE if app.config["DATABASE_URL"] else SCHEMA_FILE
+        for statement in schema_file.read_text(encoding="utf-8").split(";"):
+            if statement.strip():
+                get_db().execute(statement)
         get_db().commit()
 
 
@@ -219,7 +252,7 @@ def send_email(recipient: str, subject: str, body: str) -> None:
         server.send_message(message)
 
 
-def current_candidate() -> sqlite3.Row | None:
+def current_candidate() -> sqlite3.Row | dict | None:
     candidate_id = session.get("candidate_id")
     if not candidate_id:
         return None
@@ -417,16 +450,16 @@ def inscription():
             flash("Le mot de passe doit contenir au moins 8 caractères.", "danger")
         else:
             try:
-                cursor = get_db().execute("INSERT INTO candidats (numero_dossier, email, mot_de_passe, nom, prenoms, telephone, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)", (dossier_number(), email, generate_password_hash(values["password"]), values["nom"].strip(), values["prenoms"].strip(), values["telephone"].strip(), now()))
+                candidate = get_db().execute("INSERT INTO candidats (numero_dossier, email, mot_de_passe, nom, prenoms, telephone, created_at) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id", (dossier_number(), email, generate_password_hash(values["password"]), values["nom"].strip(), values["prenoms"].strip(), values["telephone"].strip(), now())).fetchone()
                 get_db().commit()
-                candidate = get_db().execute("SELECT numero_dossier FROM candidats WHERE id = ?", (cursor.lastrowid,)).fetchone()
+                candidate = get_db().execute("SELECT numero_dossier FROM candidats WHERE id = ?", (candidate["id"],)).fetchone()
                 flash(f"Compte créé. Votre numéro de dossier est {candidate['numero_dossier']}.", "success")
                 try:
                     send_email(email, "Bienvenue à EMSP", f"Bonjour {values['prenoms'].strip()},\n\nVotre compte a été créé avec succès.\nNuméro de dossier : {candidate['numero_dossier']}\n\nVous pouvez maintenant compléter votre candidature.\n\nL'équipe EMSP")
                 except Exception:
                     pass
                 return redirect(url_for("connexion", identifiant=email))
-            except sqlite3.IntegrityError:
+            except (sqlite3.IntegrityError, psycopg.IntegrityError):
                 flash("Cette adresse email possède déjà un compte.", "danger")
     return render_template("inscription.html", values=values, google_enabled=bool(app.config.get("GOOGLE_CLIENT_ID") and app.config.get("GOOGLE_CLIENT_SECRET")))
 
@@ -531,9 +564,9 @@ def login_google_authorized():
     candidate = db.execute("SELECT * FROM candidats WHERE lower(email) = ?", (email,)).fetchone()
     if candidate is None:
         try:
-            cursor = db.execute("INSERT INTO candidats (numero_dossier, email, mot_de_passe, nom, prenoms, telephone, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)", (dossier_number(), email, generate_password_hash(secrets.token_hex(16)), profile.get("family_name", ""), profile.get("given_name", ""), profile.get("phone_number", ""), now()))
+            candidate_id = db.execute("INSERT INTO candidats (numero_dossier, email, mot_de_passe, nom, prenoms, telephone, created_at) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id", (dossier_number(), email, generate_password_hash(secrets.token_hex(16)), profile.get("family_name", ""), profile.get("given_name", ""), profile.get("phone_number", ""), now())).fetchone()["id"]
             db.commit()
-            candidate = db.execute("SELECT * FROM candidats WHERE id = ?", (cursor.lastrowid,)).fetchone()
+            candidate = db.execute("SELECT * FROM candidats WHERE id = ?", (candidate_id,)).fetchone()
             flash("Compte Google créé avec succès.", "success")
             try:
                 numero_dossier, dossier_path = creer_dossier_utilisateur(email)
@@ -547,7 +580,7 @@ def login_google_authorized():
                 send_email(email, "Bienvenue à EMSP", f"Bonjour {profile.get('given_name', '')},\n\nVotre compte Google a été lié avec succès.\nNuméro de dossier : {candidate['numero_dossier']}\n\nVous pouvez maintenant compléter votre candidature.\n\nL'équipe EMSP")
             except Exception:
                 pass
-        except sqlite3.IntegrityError:
+        except (sqlite3.IntegrityError, psycopg.IntegrityError):
             flash("Cette adresse email possède déjà un compte.", "danger")
             return redirect(url_for("connexion"))
     else:
@@ -800,12 +833,12 @@ def admis():
 @admin_required
 def admin():
     db = get_db()
-    total_candidatures = db.execute("SELECT COUNT(*) FROM candidatures").fetchone()[0]
-    brouillons = db.execute("SELECT COUNT(*) FROM candidatures WHERE statut='brouillon'").fetchone()[0]
-    soumises = db.execute("SELECT COUNT(*) FROM candidatures WHERE statut='soumise'").fetchone()[0]
-    validees = db.execute("SELECT COUNT(*) FROM candidatures WHERE statut='validee'").fetchone()[0]
-    rejetees = db.execute("SELECT COUNT(*) FROM candidatures WHERE statut='rejetee'").fetchone()[0]
-    total_dossiers_physiques = db.execute("SELECT COUNT(*) FROM dossiers_physiques").fetchone()[0]
+    total_candidatures = db.execute("SELECT COUNT(*) AS count FROM candidatures").fetchone()["count"]
+    brouillons = db.execute("SELECT COUNT(*) AS count FROM candidatures WHERE statut='brouillon'").fetchone()["count"]
+    soumises = db.execute("SELECT COUNT(*) AS count FROM candidatures WHERE statut='soumise'").fetchone()["count"]
+    validees = db.execute("SELECT COUNT(*) AS count FROM candidatures WHERE statut='validee'").fetchone()["count"]
+    rejetees = db.execute("SELECT COUNT(*) AS count FROM candidatures WHERE statut='rejetee'").fetchone()["count"]
+    total_dossiers_physiques = db.execute("SELECT COUNT(*) AS count FROM dossiers_physiques").fetchone()["count"]
     return render_template("admin_home.html", candidate=current_candidate(), total_candidatures=total_candidatures, brouillons=brouillons, soumises=soumises, validees=validees, rejetees=rejetees, total_dossiers_physiques=total_dossiers_physiques)
 
 
@@ -879,7 +912,7 @@ def toggle_results():
 def export_csv():
     output = io.StringIO(); writer = csv.writer(output); writer.writerow(["numero_dossier", "nom", "prenoms", "statut", "filiere"])
     for row in get_db().execute("SELECT c.numero_dossier, c.nom, c.prenoms, ca.statut, ca.choix_1_filiere FROM candidatures ca JOIN candidats c ON c.id=ca.candidat_id"):
-        writer.writerow(row)
+        writer.writerow(row.values())
     return app.response_class(output.getvalue(), mimetype="text/csv", headers={"Content-Disposition": "attachment; filename=candidatures.csv"})
 
 
